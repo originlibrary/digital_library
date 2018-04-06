@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 const service = axios.create({
-    baseURL: '/dglib',
+    baseURL: '/api',
     timeout: 10000
 })
 

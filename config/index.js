@@ -11,9 +11,10 @@ module.exports = {
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
     proxyTable: {
-        '/dglib': {
+        '/api': {
             target: 'http://localhost:8033',
-            changeOrigin: true
+            changeOrigin: true,
+            pathRewrite: { "^/api" : "" }
         }
     },
     // Various Dev Server settings

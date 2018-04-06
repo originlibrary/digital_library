@@ -5,8 +5,7 @@
   "author": "sxy",
   "private": true,
   "scripts": {
-    "server-dev": "webpack-dev-server --inline --progress --config build/webpack.dev.conf.js",
-    "dev": "node build/dev-server.js",
+    "dev": "webpack-dev-server --inline --progress --config build/webpack.dev.conf.js",
     "start": "npm run server-dev",
     "build": "node build/build.js"
   },
