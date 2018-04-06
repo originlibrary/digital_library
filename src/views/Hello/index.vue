@@ -1,6 +1,6 @@
 <template>
     <section>
-        hellow
+        hello
     </section>
 </template>
 
