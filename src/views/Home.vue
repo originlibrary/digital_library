@@ -1,20 +1,20 @@
 <template>
     <div class="home-wrap">
         <Sider class="side-wrap">
-            <Menu active-name="1-2" theme="dark" width="auto" @on-select="handleSelect">
+            <Menu active-name="Hello" theme="dark" width="auto" @on-select="handleSelect">
                 <MenuItem name="Hello">
                     <Icon type="navicon-round" class="sider-icon"></Icon>
                     首页
                 </MenuItem>
-                <MenuItem name="BookList">
+                <MenuItem name="Book">
                     <Icon type="ios-book" class="sider-icon"></Icon>
                     图书
                 </MenuItem>
-                <MenuItem name="DownloadList">
+                <MenuItem name="Download">
                     <Icon type="ios-timer-outline" class="sider-icon"></Icon>
-                    下载列表
+                    下载
                 </MenuItem>
-                <MenuItem name="UserManager">
+                <MenuItem name="User">
                     <Icon type="ios-people" class="sider-icon"></Icon>
                     用户管理
                 </MenuItem>
@@ -32,7 +32,7 @@
         <Layout class="main-wrap">
             <Header class="header">
                 <Breadcrumb>
-                    <BreadcrumbItem v-for="name in routerList" @click="$router.push({name})" :key="name">{{name}}</BreadcrumbItem>
+                    <BreadcrumbItem v-for="route in routerList" :to="route.path" :key="route.name">{{route.label}}</BreadcrumbItem>
                 </Breadcrumb>
             </Header>
             <Content class="main-body">
@@ -57,12 +57,22 @@
         computed: {
             routerList() {
                 return this.$route.matched.map(route => {
-                    return route.name
+                    return {
+                        name: route.name,
+                        path: route.path,
+                        label: route.meta.label
+                    }
                 })
             }
         },
+        created() {
+            this.$store.dispatch('SetUserInfo', {
+                id: 1,
+                name: 'name',
+                role: 1
+            })
+        },
         mounted() {
-            console.log(this.$route)
         }
     }
 </script>
