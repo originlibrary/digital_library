@@ -16,7 +16,7 @@
         </div>
         <div class="content">
             <SiderBar class="slider"/>
-            <div class="main">
+            <div class="main" id="main">
                 <router-view/>
             </div>
         </div>
