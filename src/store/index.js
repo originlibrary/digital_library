@@ -25,6 +25,11 @@ export default new Vuex.Store({
             commit('SET_ID', user.id)
             commit('SET_NAME', user.name)
             commit('SET_ROLE', user.role)
+        },
+        logout: ({commit}) => {
+            commit('SET_ID', '')
+            commit('SET_NAME', '')
+            commit('SET_ROLE', '')
         }
     },
     getters

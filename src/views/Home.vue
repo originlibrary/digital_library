@@ -1,7 +1,7 @@
 <template>
     <div class="home-wrap">
         <Sider class="side-wrap">
-            <Menu active-name="Hello" theme="dark" width="auto" @on-select="handleSelect">
+            <Menu :active-name="$route.name" theme="dark" width="auto" @on-select="handleSelect">
                 <MenuItem name="Hello">
                     <Icon type="navicon-round" class="sider-icon"></Icon>
                     首页
@@ -34,6 +34,10 @@
                 <Breadcrumb>
                     <BreadcrumbItem v-for="route in routerList" :to="route.path" :key="route.name">{{route.label}}</BreadcrumbItem>
                 </Breadcrumb>
+                <Button type="text" @click="exit">
+                    <Icon type="power" style="margin-right: 0.5rem;"></Icon>
+                    <span>退出登录</span>
+                </Button>
             </Header>
             <Content class="main-body">
                 <Card class="main-card">
@@ -52,6 +56,13 @@
         methods: {
             handleSelect(name) {
                 this.$router.push({name: name})
+            },
+            exit() {
+                this.$store.dispatch('logout').then(() => {
+                    this.$router.push('/Login')
+                }).catch(err => {
+                    console.log(err)
+                })
             }
         },
         computed: {
@@ -64,15 +75,6 @@
                     }
                 })
             }
-        },
-        created() {
-            this.$store.dispatch('SetUserInfo', {
-                id: 1,
-                name: 'name',
-                role: 1
-            })
-        },
-        mounted() {
         }
     }
 </script>
@@ -104,8 +106,9 @@
             .header {
                 background-color: #fff;
                 box-shadow: 0 2px 3px 2px rgba(0,0,0,.1);
+                display: flex;
+                justify-content: space-between;
             }
-
             .main-body {
                 padding: 1rem;
                 display: flex;
@@ -113,6 +116,9 @@
             .main-card {
                 flex: auto;
             }
+        }
+        .exit {
+            text-align: center;
         }
     }
 </style>

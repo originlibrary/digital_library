@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
+import store from '../store'
 import NProgress from 'nprogress'
 import 'nprogress/nprogress.css'
 
@@ -48,9 +49,9 @@ const router = new Router({
             ]
         },
         {
-            path: '/login',
+            path: '/Login',
             meta: { label: '登录' },
-            name: 'login',
+            name: 'Login',
             component: Login
         }
     ]
@@ -58,7 +59,17 @@ const router = new Router({
 
 router.beforeEach((to, from, next) => {
     NProgress.start();
-    next()
+    console.log(to)
+    if(to.name !== 'Login') {
+        if(!store.getters.id || !store.getters.name || !store.getters.role) {
+            // next({
+            //     name: 'Login'
+            // })
+            next()
+        }
+    }else {
+        next()
+    }
 })
 
 router.afterEach((to, from) => {
