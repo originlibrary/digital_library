@@ -1,42 +1,48 @@
 <template>
     <div class="home-wrap">
-        <div class="header">
-            <Menu mode="horizontal" theme="light" activeName="helloWorld" @on-select="handleSelect">
-                <MenuItem name="helloWorld">
-                    <Icon type="ios-paper"></Icon>
-                    内容管理
+        <Sider class="side-wrap">
+            <Menu active-name="1-2" theme="dark" width="auto" :open-names="['1']">
+                <MenuItem name="Hello">
+                    <Icon type="navicon-round" class="sider-icon"></Icon>
+                    首页
                 </MenuItem>
-                <MenuItem name="111">
-                    <Icon type="ios-people"></Icon>
+                <MenuItem name="BookList">
+                    <Icon type="ios-book" class="sider-icon"></Icon>
+                    图书
+                </MenuItem>
+                <MenuItem name="DownloadList">
+                    <Icon type="ios-timer-outline" class="sider-icon"></Icon>
+                    下载列表
+                </MenuItem>
+                <MenuItem name="UserManager">
+                    <Icon type="ios-people" class="sider-icon"></Icon>
                     用户管理
                 </MenuItem>
-                <Submenu name="3">
-                    <template slot="title">
-                        <Icon type="stats-bars"></Icon>
-                        统计分析
-                    </template>
-                    <MenuGroup title="使用">
-                        <MenuItem name="3-1">新增和启动</MenuItem>
-                        <MenuItem name="3-2">活跃分析</MenuItem>
-                        <MenuItem name="3-3">时段分析</MenuItem>
-                    </MenuGroup>
-                    <MenuGroup title="留存">
-                        <MenuItem name="3-4">用户留存</MenuItem>
-                        <MenuItem name="3-5">流失用户</MenuItem>
-                    </MenuGroup>
-                </Submenu>
-                <MenuItem name="4">
-                    <Icon type="settings"></Icon>
-                    综合设置
-                </MenuItem>
+                <!--<Submenu name="1">-->
+                    <!--<template slot="title">-->
+                        <!--<Icon type="ios-navigate"></Icon>-->
+                        <!--Item 1-->
+                    <!--</template>-->
+                    <!--<MenuItem name="1-1">Option 1</MenuItem>-->
+                    <!--<MenuItem name="1-2">Option 2</MenuItem>-->
+                    <!--<MenuItem name="1-3">Option 3</MenuItem>-->
+                <!--</Submenu>-->
             </Menu>
-        </div>
-        <div class="main">
-            <router-view/>
-            <BackTop :height="100" :bottom="200">
-                <div class="top">返回顶端</div>
-            </BackTop>
-        </div>
+        </Sider>
+        <Layout class="main-wrap">
+            <Header class="header">
+                <Breadcrumb>
+                    <BreadcrumbItem>Home</BreadcrumbItem>
+                    <BreadcrumbItem>Components</BreadcrumbItem>
+                    <BreadcrumbItem>Layout</BreadcrumbItem>
+                </Breadcrumb>
+            </Header>
+            <Content class="main-body">
+                <Card class="main-card">
+                    <router-view/>
+                </Card>
+            </Content>
+        </Layout>
     </div>
 </template>
 
@@ -55,28 +61,40 @@
 
 <style lang="scss" scoped>
     .home-wrap {
+        $sideWidth: 12.5rem;
         $headerHeight: 4rem;
         background-color: #ffffff;
         width: 100%;
         height: 100%;
         padding: 0;
         margin: 0;
+        display: flex;
 
-        .header {
-            width: 100%;
-            height: $headerHeight;
-        }
-        .main {
-            width: 100%;
-            height: calc(100% - #{$headerHeight});
+        .side-wrap {
+            flex: none;
+            width: 12.5rem;
+            height: 100%;
             overflow: auto;
         }
-        .top {
-            padding: 10px;
-            background: rgba(0, 153, 229, .7);
-            color: #fff;
-            text-align: center;
-            border-radius: 2px;
+        .sider-icon {
+            width: 1rem;
+        }
+        .main-wrap {
+            width: calc(100% - #{$sideWidth});
+            height: 100%;
+
+            .header {
+                background-color: #fff;
+                box-shadow: 0 2px 3px 2px rgba(0,0,0,.1);
+            }
+
+            .main-body {
+                padding: 1rem;
+                display: flex;
+            }
+            .main-card {
+                flex: auto;
+            }
         }
     }
 </style>
