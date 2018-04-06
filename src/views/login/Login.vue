@@ -44,11 +44,11 @@
                     content: '登录中...',
                     duration: 0
                 })
-                let para = {
+                let data = {
                     account: this.account,
                     password: this.password
                 }
-                login(para).then(res => {
+                login(data).then(res => {
                     this.$store.dispatch('SetUserInfo', res).then(() => {
                         closeMsg()
                         this.pending = false
