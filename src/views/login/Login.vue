@@ -1,15 +1,18 @@
 <template>
     <div class="login-wrap">
         <div class="login-box">
-            <div>
-                <div class="input-wrap">
-                    <label class="icon-id"></label>
-                    <input type="text" placeholder="用户名" v-model="account">
-                </div>
-                <div class="input-wrap">
-                    <label class="icon-password"></label>
-                    <input type="password" placeholder="密码" v-model="password">
-                </div>
+            <div style="width: 200px">
+                <Input v-model="account">
+                    <span slot="prepend">
+                        <Icon type="person" slot="prepend"></Icon>
+                    </span>
+                </Input>
+                <br />
+                <Input v-model="password" type="password">
+                    <span slot="prepend">
+                        <Icon type="locked" slo="prepend"></Icon>
+                    </span>
+                </Input>
                 <div class="button">
                     <a class="gv" href="javascript: void(0)" @click="login()">登录</a>
                 </div>
@@ -22,13 +25,13 @@
 </template>
 
 <script>
-    import {login} from '../../api/user'
+    import { login } from '../../api/user'
 
     export default {
         data() {
             return {
-                account: this.$route.query.account || this.$store.getters.account || '',
-                password: '',
+                account: this.$route.query.account || this.$store.getters.account || 'admin',
+                password: 'admin',
                 pending: false
             }
         },
@@ -131,8 +134,11 @@
             padding: 0 5px;
         }
         .button {
-            margin-top: 30px;
-            margin-left: 60px
+            width: 100%;
+            height: 80px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
         .toregist {
             font-size: 12px;

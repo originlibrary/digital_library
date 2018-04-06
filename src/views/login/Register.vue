@@ -3,19 +3,19 @@
         <div class="register-box">
             <div>
                 <div class="input-wrap">
-                    <label class="icon-user"></label>
+                    <Icon type="edit" size="20" color="#fff"></Icon>
                     <input type="text" placeholder="昵称" v-model="username">
                 </div>
                 <div class="input-wrap">
-                    <label class="icon-id"></label>
+                    <Icon type="person" size="20" color="#fff"></Icon>
                     <input type="text" placeholder="用户名" v-model="account">
                 </div>
                 <div class="input-wrap">
-                    <label class="icon-password"></label>
+                    <Icon type="locked" size="20" color="#fff"></Icon>
                     <input type="password" placeholder="密码" v-model="password">
                 </div>
                 <div class="input-wrap">
-                    <label class="icon-password"></label>
+                    <Icon type="locked" size="20" color="#fff"></Icon>
                     <input :class="[!isSame ? 'un-same-password' : '']" type="password" placeholder="确认密码" v-model="password2" >
                     <Icon v-if="!isSame" type="ios-information" style="color: red"></Icon>
                 </div>

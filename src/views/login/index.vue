@@ -2,7 +2,6 @@
     <div class="index-wrap">
         <canvas id="canvas" class="canvas"></canvas>
         <div class="logo">
-            <img src="../../assets/logo.png" height="100%" alt="">
             <span>SXY的图书馆</span>
         </div>
         <div class="main">
@@ -84,7 +83,8 @@
             margin: 20px auto;
             margin-top: 5.5rem;
             display: flex;
-            align-items: flex-end;
+            justify-content: center;
+            align-items: center;
 
             img {
                 flex: none;
