@@ -1,7 +1,7 @@
 <template>
     <div class="home-wrap">
         <Sider class="side-wrap">
-            <Menu active-name="1-2" theme="dark" width="auto" :open-names="['1']">
+            <Menu active-name="1-2" theme="dark" width="auto" @on-select="handleSelect">
                 <MenuItem name="Hello">
                     <Icon type="navicon-round" class="sider-icon"></Icon>
                     首页
@@ -32,9 +32,7 @@
         <Layout class="main-wrap">
             <Header class="header">
                 <Breadcrumb>
-                    <BreadcrumbItem>Home</BreadcrumbItem>
-                    <BreadcrumbItem>Components</BreadcrumbItem>
-                    <BreadcrumbItem>Layout</BreadcrumbItem>
+                    <BreadcrumbItem v-for="name in routerList" @click="$router.push({name})" :key="name">{{name}}</BreadcrumbItem>
                 </Breadcrumb>
             </Header>
             <Content class="main-body">
@@ -55,6 +53,16 @@
             handleSelect(name) {
                 this.$router.push({name: name})
             }
+        },
+        computed: {
+            routerList() {
+                return this.$route.matched.map(route => {
+                    return route.name
+                })
+            }
+        },
+        mounted() {
+            console.log(this.$route)
         }
     }
 </script>
