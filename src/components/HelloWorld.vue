@@ -1,50 +1,65 @@
 <template>
-  <div class="nav">
-    <el-menu
-      :default-active="activeIndex2"
-      class="el-menu-demo"
-      mode="horizontal"
-      @select="handleSelect"
-      background-color="#545c64"
-      text-color="#fff"
-      active-text-color="#ffd04b">
-      <el-menu-item index="1">首页</el-menu-item>
-      <el-submenu index="2">
-        <template slot="title">图书分类</template>
-        <el-menu-item index="2-1">选项1</el-menu-item>
-        <el-menu-item index="2-2">选项2</el-menu-item>
-        <el-menu-item index="2-3">选项3</el-menu-item>
-        <el-submenu index="2-4">
-          <template slot="title">预览</template>
-          <el-menu-item index="2-4-1">选项1</el-menu-item>
-          <el-menu-item index="2-4-2">选项2</el-menu-item>
-          <el-menu-item index="2-4-3">选项3</el-menu-item>
-        </el-submenu>
-      </el-submenu>
-      <el-menu-item index="3" >预览</el-menu-item>
-      <el-menu-item index="4">下载</el-menu-item>
-      <el-menu-item index="4">进入后台</el-menu-item>
-    </el-menu>
+  <div class="layout">
+    <Sider :style="{position: 'fixed', height: '100vh', left: 0, overflow: 'auto'}">
+      <Menu active-name="1-2" theme="dark" width="auto" :open-names="['1']">
+        <img src="#"> 数字图书馆
+        <Submenu name="1">
+          <template slot="title">首页</template>
+        </Submenu>
+        <Submenu name="2">
+          <template slot="title">图书分类</template>
+          <MenuItem name="2-1">Option 1</MenuItem>
+          <MenuItem name="2-2">Option 2</MenuItem>
+        </Submenu>
+        <Submenu name="3">
+          <template slot="title">图书下载/预览</template>
+        </Submenu>
+        <Submenu name="4">
+          <template slot="title">图书推荐</template>
+        </Submenu>
+        <Submenu name="5">
+          <template slot="title">用户信息</template>
+        </Submenu>
+        <Submenu name="6">
+          <template slot="title">进入后台</template>
+        </Submenu>
+      </Menu>
+    </Sider>
+    <Layout :style="{marginLeft: '200px'}">
+      <Header :style="{background: '#fff', boxShadow: '0 2px 3px 2px rgba(0,0,0,.1)'}"></Header>
+      <Content :style="{padding: '0 16px 16px'}">
+        <Breadcrumb :style="{margin: '16px 0'}">
+          <BreadcrumbItem>Home</BreadcrumbItem>
+          <BreadcrumbItem>Components</BreadcrumbItem>
+          <BreadcrumbItem>Layout</BreadcrumbItem>
+        </Breadcrumb>
+        <Card>
+          <div style="height: 600px">Content</div>
+        </Card>
+      </Content>
+    </Layout>
   </div>
 </template>
 
 <script>
 export default {
   data() {
-    return {
-      activeIndex: '1',
-      activeIndex2: '1'
-    };
-  },
-  methods: {
-    handleSelect(key, keyPath) {
-      console.log(key, keyPath);
-    }
+
   }
 }
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-
+  .layout{
+    border: 1px solid #d7dde4;
+    background: #f5f7f9;
+    position: relative;
+    border-radius: 4px;
+    overflow: hidden;
+  }
+  .layout-header-bar{
+    background: #fff;
+    box-shadow: 0 1px 1px rgba(0,0,0,.1);
+  }
 </style>
