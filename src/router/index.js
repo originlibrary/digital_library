@@ -5,7 +5,9 @@ import NProgress from 'nprogress'
 import 'nprogress/nprogress.css'
 
 import Home from '../views/Home'
-import Login from '../views/login'
+import Index from '../views/login'
+import Login from '../views/login/Login'
+import Register from '../views/login/Register'
 import Hello from '../views/Hello'
 import Book from '../views/book'
 import Download from '../views/download'
@@ -18,6 +20,20 @@ const router = new Router({
     routes: [
         {
             path: '/',
+            component: Index,
+            redirect: '/login',
+            children : [{
+                path : '/login',
+                name: 'login',
+                component : Login
+            },{
+                path : '/register',
+                name: 'register',
+                component : Register
+            }]
+        },
+        {
+            path: '/Home',
             name: 'Home',
             redirect: '/Hello',
             meta: { label: '首页' },
@@ -48,33 +64,40 @@ const router = new Router({
                     component: User
                 }
             ]
-        },
-        {
-            path: '/Login',
-            meta: { label: '登录' },
-            name: 'Login',
-            component: Login
         }
     ]
 })
 
+const whiteList = ['/login', '/register']
+const isInWhiteList = path => {
+    let res = whiteList.filter(p => p === path)
+    return res.length !== 0
+}
 router.beforeEach((to, from, next) => {
-    NProgress.start();
-    console.log(to)
-    if(to.name !== 'Login') {
-        if(!store.getters.id || !store.getters.name || !store.getters.role) {
-            // next({
-            //     name: 'Login'
-            // })
-            next()
-        }
-    }else {
+    //开启跳转过度条
+    NProgress.start()
+
+    //登录判断
+    if(isInWhiteList(to.path)) {
         next()
+    }else {
+        let loginUserId = sessionStorage.getItem('loginUserId')
+        if(store.getters.id === loginUserId) {
+            next()
+        }else {
+            store.dispatch('GetUserInfo', loginUserId).then(res => {
+                next()
+            }).catch(() => {
+                NProgress.done()
+                next('/login')
+            })
+        }
     }
 })
 
 router.afterEach((to, from) => {
-    NProgress.done();
+    //关闭跳转过度条
+    NProgress.done()
 })
 
 export default router
