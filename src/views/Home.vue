@@ -33,6 +33,9 @@
         </div>
         <div class="main">
             <router-view/>
+            <BackTop :height="100" :bottom="200">
+                <div class="top">返回顶端</div>
+            </BackTop>
         </div>
     </div>
 </template>
@@ -40,23 +43,20 @@
 <script>
     export default {
         data() {
-            return {
-
-            }
+            return {}
         },
         methods: {
             handleSelect(name) {
-                this.$router.push({name})
+                this.$router.push({name: name})
             }
         }
     }
 </script>
 
-<style lang="scss" scoped="">
+<style lang="scss" scoped>
     .home-wrap {
         $headerHeight: 4rem;
         background-color: #ffffff;
-
         width: 100%;
         height: 100%;
         padding: 0;
@@ -69,6 +69,14 @@
         .main {
             width: 100%;
             height: calc(100% - #{$headerHeight});
+            overflow: auto;
+        }
+        .top {
+            padding: 10px;
+            background: rgba(0, 153, 229, .7);
+            color: #fff;
+            text-align: center;
+            border-radius: 2px;
         }
     }
 </style>
