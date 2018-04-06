@@ -73,6 +73,12 @@
         overflow: hidden;
         position: relative;
 
+        input:-webkit-autofill,
+        input:-webkit-autofill:hover,
+        input:-webkit-autofill:focus {
+            box-shadow:0 0 0 50px white inset!important;
+        }
+
         .gv {
             text-decoration: none;
             background: url('../../assets/images/nav_gv.png') repeat 0px 0px;
