@@ -6,8 +6,16 @@ import router from './router'
 import iView from 'iview'
 import 'iview/dist/styles/iview.css'
 import store from './store'
+import _ from 'lodash'
 
 Vue.use(iView)
+
+Object.defineProperty(Vue.prototype, '$util', {
+    writable: false,
+    enumerable: false,
+    value: _
+})
+
 Vue.config.productionTip = false
 
 /* eslint-disable no-new */
