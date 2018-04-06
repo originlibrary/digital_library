@@ -18,13 +18,13 @@ const router = new Router({
                     path: '/helloWorld',
                     name: 'helloWorld',
                     component: HelloWorld
-                },
-                {
-                    path: '/login',
-                    name: 'login',
-                    component: Login
                 }
             ]
+        },
+        {
+            path: '/login',
+            name: 'login',
+            component: Login
         }
     ]
 })

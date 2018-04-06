@@ -6,7 +6,7 @@
                     <Icon type="ios-paper"></Icon>
                     内容管理
                 </MenuItem>
-                <MenuItem name="login">
+                <MenuItem name="111">
                     <Icon type="ios-people"></Icon>
                     用户管理
                 </MenuItem>
