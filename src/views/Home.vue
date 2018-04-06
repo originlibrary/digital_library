@@ -1,265 +1,94 @@
 <template>
-    <div class="home-wrap">
-        <canvas id="canvas" class="canvas"></canvas>
-        <div class="header">
-            <div class="header-title">
-                <span class="title">SXY的个人图书馆</span>
-                <span class="remark">v1.0</span>
-            </div>
-            <div class="login-tool">
-                <span class="tool-text">{{$store.getters.name}}</span>
-                <div @click="exit" class="tool-button">
-                    <Icon type="power" class="tool-icon"></Icon>
-                    <span class="tool-text">退出登录</span>
+    <HomeCanvas>
+        <div class="home-wrap">
+            <div class="header">
+                <div class="header-title">
+                    <span class="title">SXY的个人图书馆</span>
+                    <span class="remark">v1.0</span>
+                </div>
+                <div class="login-tool">
+                    <span class="tool-text">{{$store.getters.name}}</span>
+                    <div @click="exit" class="tool-button">
+                        <Icon type="power" class="tool-icon"></Icon>
+                        <span class="tool-text">退出登录</span>
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="content">
-            <SiderBar class="slider"/>
-            <div class="main">
-                <router-view/>
-            </div>
-        </div>
-        <!--<Sider class="side-wrap">
-            <Menu :active-name="$route.name" theme="dark" width="auto" @on-select="handleSelect">
-                <MenuItem name="Hello">
-                    <Icon type="navicon-round" class="sider-icon"></Icon>
-                    首页
-                </MenuItem>
-                <MenuItem name="Book">
-                    <Icon type="ios-book" class="sider-icon"></Icon>
-                    图书
-                </MenuItem>
-                <MenuItem name="Download">
-                    <Icon type="ios-timer-outline" class="sider-icon"></Icon>
-                    下载
-                </MenuItem>
-                <MenuItem name="User" v-if="$store.getters.role === '1'">
-                    <Icon type="ios-people" class="sider-icon"></Icon>
-                    用户管理
-                </MenuItem>
-                &lt;!&ndash;<Submenu name="1">&ndash;&gt;
-                    &lt;!&ndash;<template slot="title">&ndash;&gt;
-                        &lt;!&ndash;<Icon type="ios-navigate"></Icon>&ndash;&gt;
-                        &lt;!&ndash;Item 1&ndash;&gt;
-                    &lt;!&ndash;</template>&ndash;&gt;
-                    &lt;!&ndash;<MenuItem name="1-1">Option 1</MenuItem>&ndash;&gt;
-                    &lt;!&ndash;<MenuItem name="1-2">Option 2</MenuItem>&ndash;&gt;
-                    &lt;!&ndash;<MenuItem name="1-3">Option 3</MenuItem>&ndash;&gt;
-                &lt;!&ndash;</Submenu>&ndash;&gt;
-            </Menu>
-        </Sider>
-        <Layout class="main-wrap">
-            <Header class="header">
-                <Breadcrumb>
-                    <BreadcrumbItem v-for="route in routerList" :to="route.path" :key="route.name">{{route.label}}</BreadcrumbItem>
-                </Breadcrumb>
-                <div>
-                    <span>{{$store.getters.name}}</span>
-                    <Button type="text" @click="exit">
-                        <Icon type="power" style="margin-right: 0.5rem;"></Icon>
-                        <span>退出登录</span>
-                    </Button>
-                </div>
-            </Header>
-            <Content class="main-body">
-                <Card class="main-card">
+            <div class="content">
+                <SiderBar class="slider"/>
+                <div class="main">
                     <router-view/>
-                </Card>
-            </Content>
-        </Layout>-->
-    </div>
+                </div>
+            </div>
+            <!--<Sider class="side-wrap">
+                <Menu :active-name="$route.name" theme="dark" width="auto" @on-select="handleSelect">
+                    <MenuItem name="Hello">
+                        <Icon type="navicon-round" class="sider-icon"></Icon>
+                        首页
+                    </MenuItem>
+                    <MenuItem name="Book">
+                        <Icon type="ios-book" class="sider-icon"></Icon>
+                        图书
+                    </MenuItem>
+                    <MenuItem name="Download">
+                        <Icon type="ios-timer-outline" class="sider-icon"></Icon>
+                        下载
+                    </MenuItem>
+                    <MenuItem name="User" v-if="$store.getters.role === '1'">
+                        <Icon type="ios-people" class="sider-icon"></Icon>
+                        用户管理
+                    </MenuItem>
+                    &lt;!&ndash;<Submenu name="1">&ndash;&gt;
+                        &lt;!&ndash;<template slot="title">&ndash;&gt;
+                            &lt;!&ndash;<Icon type="ios-navigate"></Icon>&ndash;&gt;
+                            &lt;!&ndash;Item 1&ndash;&gt;
+                        &lt;!&ndash;</template>&ndash;&gt;
+                        &lt;!&ndash;<MenuItem name="1-1">Option 1</MenuItem>&ndash;&gt;
+                        &lt;!&ndash;<MenuItem name="1-2">Option 2</MenuItem>&ndash;&gt;
+                        &lt;!&ndash;<MenuItem name="1-3">Option 3</MenuItem>&ndash;&gt;
+                    &lt;!&ndash;</Submenu>&ndash;&gt;
+                </Menu>
+            </Sider>
+            <Layout class="main-wrap">
+                <Header class="header">
+                    <Breadcrumb>
+                        <BreadcrumbItem v-for="route in routerList" :to="route.path" :key="route.name">{{route.label}}</BreadcrumbItem>
+                    </Breadcrumb>
+                    <div>
+                        <span>{{$store.getters.name}}</span>
+                        <Button type="text" @click="exit">
+                            <Icon type="power" style="margin-right: 0.5rem;"></Icon>
+                            <span>退出登录</span>
+                        </Button>
+                    </div>
+                </Header>
+                <Content class="main-body">
+                    <Card class="main-card">
+                        <router-view/>
+                    </Card>
+                </Content>
+            </Layout>-->
+        </div>
+    </HomeCanvas>
 </template>
 
 <script>
     import SiderBar from '../components/slider'
+    import HomeCanvas from '../components/HomeCanvas'
 
     export default {
-        data() {
-            return {}
-        },
         components: {
-            SiderBar
+            SiderBar,
+            HomeCanvas
         },
         methods: {
-            handleSelect(name) {
-                this.$router.push({name: name})
-            },
             exit() {
                 this.$store.dispatch('logout').then(() => {
                     this.$router.push('/login')
                 }).catch(err => {
                     console.log(err)
                 })
-            },
-            setCanvas() {
-                var canvas = document.querySelector('canvas'),
-                    ctx = canvas.getContext('2d')
-                canvas.width = window.innerWidth;
-                canvas.height = window.innerHeight;
-                ctx.lineWidth = .3;
-                ctx.strokeStyle = (new Color(150)).style;
-
-                // var mousePosition = {
-                // 	x: 30 * canvas.width / 100,
-                // 	y: 30 * canvas.height / 100
-                // };
-                var mousePosition = {
-                    x:  canvas.width - 100,
-                    y:  canvas.height - 60
-                };
-
-                var dots = {
-                    nb: 250,
-                    distance: 100,
-                    d_radius: 150,
-                    array: []
-                };
-
-                function colorValue(min) {
-                    return Math.floor(Math.random() * 255 + min);
-                }
-
-                function createColorStyle(r,g,b) {
-                    return 'rgba(' + r + ',' + g + ',' + b + ', 0.8)';
-                }
-
-                function mixComponents(comp1, weight1, comp2, weight2) {
-                    return (comp1 * weight1 + comp2 * weight2) / (weight1 + weight2);
-                }
-
-                function averageColorStyles(dot1, dot2) {
-                    var color1 = dot1.color,
-                        color2 = dot2.color;
-
-                    var r = mixComponents(color1.r, dot1.radius, color2.r, dot2.radius),
-                        g = mixComponents(color1.g, dot1.radius, color2.g, dot2.radius),
-                        b = mixComponents(color1.b, dot1.radius, color2.b, dot2.radius);
-                    return createColorStyle(Math.floor(r), Math.floor(g), Math.floor(b));
-                }
-
-                function Color(min) {
-                    min = min || 0;
-                    this.r = colorValue(min);
-                    this.g = colorValue(min);
-                    this.b = colorValue(min);
-                    this.style = createColorStyle(this.r, this.g, this.b);
-                }
-
-                function Dot(){
-                    this.x = Math.random() * canvas.width;
-                    this.y = Math.random() * canvas.height;
-
-                    this.vx = -.5 + Math.random();
-                    this.vy = -.5 + Math.random();
-
-                    this.radius = Math.random() * 2;
-
-                    this.color = new Color();
-                }
-
-                Dot.prototype = {
-                    draw: function(){
-                        ctx.beginPath();
-                        ctx.fillStyle = this.color.style;
-                        ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false);
-                        ctx.fill();
-                    }
-                };
-
-                function createDots(){
-                    for(var i = 0; i < dots.nb; i++){
-                        dots.array.push(new Dot());
-                    }
-                }
-
-                function moveDots() {
-                    for(var i = 0; i < dots.nb; i++){
-
-                        var dot = dots.array[i];
-
-                        if(dot.y < 0 || dot.y > canvas.height){
-                            dot.vx = dot.vx;
-                            dot.vy = - dot.vy;
-                        }
-                        else if(dot.x < 0 || dot.x > canvas.width){
-                            dot.vx = - dot.vx;
-                            dot.vy = dot.vy;
-                        }
-                        dot.x += dot.vx;
-                        dot.y += dot.vy;
-                    }
-                }
-
-                function connectDots() {
-                    for(var i = 0; i < dots.nb; i++){
-                        for(var j = 0; j < dots.nb; j++){
-                            var i_dot = dots.array[i];
-                            var j_dot = dots.array[j];
-
-                            if((i_dot.x - j_dot.x) < dots.distance && (i_dot.y - j_dot.y) < dots.distance && (i_dot.x - j_dot.x) > - dots.distance && (i_dot.y - j_dot.y) > - dots.distance){
-                                if((i_dot.x - mousePosition.x) < dots.d_radius && (i_dot.y - mousePosition.y) < dots.d_radius && (i_dot.x - mousePosition.x) > - dots.d_radius && (i_dot.y - mousePosition.y) > - dots.d_radius){
-                                    ctx.beginPath();
-                                    ctx.strokeStyle = averageColorStyles(i_dot, j_dot);
-                                    ctx.moveTo(i_dot.x, i_dot.y);
-                                    ctx.lineTo(j_dot.x, j_dot.y);
-                                    ctx.stroke();
-                                    ctx.closePath();
-                                }
-                            }
-                        }
-                    }
-                }
-
-                function drawDots() {
-                    for(var i = 0; i < dots.nb; i++){
-                        var dot = dots.array[i];
-                        dot.draw();
-                    }
-                }
-
-                function animateDots() {
-                    ctx.clearRect(0, 0, canvas.width, canvas.height);
-                    moveDots();
-                    connectDots();
-                    drawDots();
-
-                    requestAnimationFrame(animateDots);
-                }
-
-                //----------------------跟着鼠标动--------------------
-                this.$el.addEventListener('mousemove', function(e){
-                    mousePosition.x = e.pageX;
-                    mousePosition.y = e.pageY;
-                });
-
-                this.$el.addEventListener('mouseleave', function(e){
-                    mousePosition.x = canvas.width / 2;
-                    mousePosition.y = canvas.height / 2;
-                });
-                //----------------------跟着鼠标动--------------------
-
-                createDots();
-                requestAnimationFrame(animateDots);
             }
-        },
-        // beforeDestroy() {
-        //     this.$el.removeEventListener('mousemove')
-        //     this.$el.removeEventListener('mouseleave')
-        // },
-        computed: {
-            routerList() {
-                return this.$route.matched.map(route => {
-                    return {
-                        name: route.name,
-                        path: route.path,
-                        label: route.meta.label
-                    }
-                })
-            }
-        },
-        mounted() {
-            this.setCanvas()
         }
     }
 </script>
@@ -268,20 +97,13 @@
     .home-wrap {
         $sideWidth: 12.5rem;
         $headerHeight: 5rem;
-        background-color: #ffffff;
         width: 100%;
         height: 100%;
         padding: 0;
         margin: 0;
         display: flex;
         flex-direction: column;
-        background-color: rgba(7,17,27,0.95);
 
-        #canvas {
-            position: absolute;
-            z-index: 1;
-            opacity: 0.5;
-        }
         .header {
             width: 100%;
             height: $headerHeight;
@@ -344,9 +166,6 @@
                     }
                 }
             }
-        }
-        .exit {
-            text-align: center;
         }
     }
 </style>
