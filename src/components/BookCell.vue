@@ -1,0 +1,67 @@
+<template>
+    <div class="bookCell" @click="clickBook">
+        <img :src="data.coverUrl" alt="" class="bookCover">
+        <div class="bookMsg">
+            {{data.name}}
+        </div>
+        <ScoreTool class="book-score" :value="data.averageScore" noSet/>
+    </div>
+</template>
+
+<script>
+    import ScoreTool from './ScoreTool'
+    export default {
+        props: {
+            data: {
+                type: Object,
+                default: () => {
+                    return {
+                        id: '',
+                        coverUrl: '',
+                        name: '',
+                        averageScore: 0
+                    }
+                }
+            }
+        },
+        data() {
+            return {
+
+            }
+        },
+        methods: {
+            clickBook() {
+                this.$emit('click', this.data.id)
+            }
+        },
+        components: {
+            ScoreTool
+        }
+    }
+</script>
+
+<style lang="scss" scoped>
+    .bookCell {
+        width: 12rem;
+        text-align: center;
+
+        .bookCover {
+            width: 6.3rem;
+            height: 7rem;
+            box-shadow: 0 0 3px 3px #fff;
+            border: 0;
+        }
+        .bookMsg {
+            margin-top: 1rem;
+            height: 2rem;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            word-break: break-all;
+            white-space: inherit;
+        }
+        .book-score {
+            margin-top: 0.5rem;
+            height: 1rem;
+        }
+    }
+</style>

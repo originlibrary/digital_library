@@ -12,6 +12,6 @@
 <style lang="scss" scoped>
     .book-index {
         width: 100%;
-        padding: 1rem 2rem;
+        height: 100%;
     }
 </style>

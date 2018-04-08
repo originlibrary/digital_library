@@ -35,6 +35,7 @@
 <script>
     import {getBookStrap} from '../../api/book'
     import ScoreTool from '../../components/ScoreTool'
+    import BookCell from '../../components/BookCell'
 
     export default {
         data() {
