@@ -2,7 +2,7 @@
     <section class="slider-wrap">
         <ul class="slider-ul">
             <router-link :to="item.path" v-for="item in list" :key="item.path">
-                <li :class="['slider-li', $route.path === item.path ? 'active-li' : '']" v-if="role <= item.role">
+                <li :class="['slider-li', isCurrent(item) ? 'active-li' : '']" v-if="role <= item.role">
                     {{item.label}}
                 </li>
             </router-link>
@@ -15,22 +15,26 @@
         {
             label: '首页',
             path: '/Hello',
-            role: 3
+            role: 3,
+            index: 0
         },
         {
             label: '图书',
             path: '/Book',
-            role: 3
+            role: 3,
+            index: 1
         },
         {
             label: '下载',
             path: '/Download',
-            role: 2
+            role: 2,
+            index: 2
         },
         {
             label: '用户管理',
             path: '/User',
-            role: 1
+            role: 1,
+            index: 3
         }
     ]
     export default {
@@ -42,6 +46,11 @@
         computed: {
             role() {
                 return this.$store.getters.role ? parseInt(this.$store.getters.role) : 1000
+            }
+        },
+        methods: {
+            isCurrent(item) {
+                return this.$route.path === item.path || this.$route.meta.index === item.index
             }
         }
     }
@@ -60,7 +69,7 @@
         }
         .slider-li {
             list-style: none;
-            padding: 0 1rem;
+            width: 10rem;
             min-width: 5rem;
             line-height: 3rem;
             text-align: center;

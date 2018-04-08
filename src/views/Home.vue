@@ -8,6 +8,7 @@
             </div>
             <SliderTop/>
             <div class="login-tool">
+                <span class="tool-text" style="margin-right: 10px;">Hello</span>
                 <span class="tool-text">{{$store.getters.name}}</span>
                 <div @click="exit" class="tool-button">
                     <Icon type="power" class="tool-icon"></Icon>
@@ -265,8 +266,8 @@
             background-color: rgba(7, 17, 27, 0.5);
             display: flex;
             /*padding: 0 2rem;*/
+            justify-content: center;
             z-index: 2;
-            margin-top: -1px;
             overflow: auto;
 
             &::-webkit-scrollbar {

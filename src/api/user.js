@@ -31,3 +31,27 @@ export const getUserInfo = data => {
         data
     })
 }
+
+export const getUserList = data => {
+    return fetch({
+        url: '/user/getUserList',
+        method: 'post',
+        data
+    })
+}
+
+export const setHighRole = data => {
+    return fetch({
+        url: '/user/setHighRole',
+        method: 'post',
+        data
+    })
+}
+
+export const deleteUser = data => {
+    return fetch({
+        url: '/user/deleteUser',
+        method: 'post',
+        data
+    })
+}
