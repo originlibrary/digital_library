@@ -9,7 +9,8 @@ export default new Vuex.Store({
         id: '',
         name: '',
         role: '',
-        account: ''
+        account: '',
+        backOrForward: 'forward'
     },
     mutations: {
         SET_ID: (state, id) => {
@@ -23,15 +24,24 @@ export default new Vuex.Store({
         },
         SET_ROLE: (state, role) => {
             state.role = role
-        }
+        },
+        SET_BACKORFORWARD: (state, backOrForward) => {
+            state.backOrForward = backOrForward
+        },
     },
     actions: {
+        SetBackOrForward: ({commit}, backOrForward) => {
+            return new Promise(resolve => {
+                commit('SET_BACKORFORWARD', backOrForward)
+                resolve()
+            })
+        },
         GetUserInfo: ({commit}, id) => {
             return new Promise((resolve, reject) => {
                 API.getUserInfo({id}).then(user => {
                     commit('SET_ID', user.id)
                     commit('SET_ACCOUNT', user.account)
-                    commit('SET_NAME', user.name)
+                    commit('SET_NAME', user.username)
                     commit('SET_ROLE', user.role)
                     sessionStorage.setItem('loginUserId', user.id)
                     resolve()
@@ -44,7 +54,7 @@ export default new Vuex.Store({
         SetUserInfo: ({commit}, user) => {
             commit('SET_ID', user.id)
             commit('SET_ACCOUNT', user.account)
-            commit('SET_NAME', user.name)
+            commit('SET_NAME', user.username)
             commit('SET_ROLE', user.role)
             sessionStorage.setItem('loginUserId', user.id)
         },

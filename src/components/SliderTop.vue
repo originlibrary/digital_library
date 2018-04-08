@@ -49,17 +49,19 @@
 
 <style lang="scss" scoped>
     .slider-wrap {
-        width: 12.5rem;
-        border-right: 1px solid #fff;
+        height: 100%;
+        display: flex;
+        align-items: flex-end;
 
         .slider-ul {
-            width: 100%;
-            height: 100%;
             list-style: none;
+            display: flex;
+            height: 3rem;
         }
         .slider-li {
             list-style: none;
-            height: 3rem;
+            padding: 0 1rem;
+            min-width: 5rem;
             line-height: 3rem;
             text-align: center;
             font-size: 1rem;
@@ -71,7 +73,7 @@
             }
         }
         .active-li {
-            background-color: rgba(7, 17, 27, .8) !important;
+            background-color: rgba(7, 17, 27, 0.5) !important;
         }
     }
 </style>

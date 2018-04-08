@@ -6,6 +6,7 @@
                 <span class="title">SXY的个人图书馆</span>
                 <span class="remark">v1.0</span>
             </div>
+            <SliderTop/>
             <div class="login-tool">
                 <span class="tool-text">{{$store.getters.name}}</span>
                 <div @click="exit" class="tool-button">
@@ -15,76 +16,30 @@
             </div>
         </div>
         <div class="content">
-            <SiderBar class="slider"/>
+            <!--<SiderBar class="slider"/>
             <div class="main" id="main">
                 <router-view/>
-            </div>
+            </div>-->
+            <transition :name="fadeName">
+                <router-view/>
+            </transition>
         </div>
-        <!--<Sider class="side-wrap">
-            <Menu :active-name="$route.name" theme="dark" width="auto" @on-select="handleSelect">
-                <MenuItem name="Hello">
-                    <Icon type="navicon-round" class="sider-icon"></Icon>
-                    首页
-                </MenuItem>
-                <MenuItem name="Book">
-                    <Icon type="ios-book" class="sider-icon"></Icon>
-                    图书
-                </MenuItem>
-                <MenuItem name="Download">
-                    <Icon type="ios-timer-outline" class="sider-icon"></Icon>
-                    下载
-                </MenuItem>
-                <MenuItem name="User" v-if="$store.getters.role === '1'">
-                    <Icon type="ios-people" class="sider-icon"></Icon>
-                    用户管理
-                </MenuItem>
-                &lt;!&ndash;<Submenu name="1">&ndash;&gt;
-                    &lt;!&ndash;<template slot="title">&ndash;&gt;
-                        &lt;!&ndash;<Icon type="ios-navigate"></Icon>&ndash;&gt;
-                        &lt;!&ndash;Item 1&ndash;&gt;
-                    &lt;!&ndash;</template>&ndash;&gt;
-                    &lt;!&ndash;<MenuItem name="1-1">Option 1</MenuItem>&ndash;&gt;
-                    &lt;!&ndash;<MenuItem name="1-2">Option 2</MenuItem>&ndash;&gt;
-                    &lt;!&ndash;<MenuItem name="1-3">Option 3</MenuItem>&ndash;&gt;
-                &lt;!&ndash;</Submenu>&ndash;&gt;
-            </Menu>
-        </Sider>
-        <Layout class="main-wrap">
-            <Header class="header">
-                <Breadcrumb>
-                    <BreadcrumbItem v-for="route in routerList" :to="route.path" :key="route.name">{{route.label}}</BreadcrumbItem>
-                </Breadcrumb>
-                <div>
-                    <span>{{$store.getters.name}}</span>
-                    <Button type="text" @click="exit">
-                        <Icon type="power" style="margin-right: 0.5rem;"></Icon>
-                        <span>退出登录</span>
-                    </Button>
-                </div>
-            </Header>
-            <Content class="main-body">
-                <Card class="main-card">
-                    <router-view/>
-                </Card>
-            </Content>
-        </Layout>-->
     </div>
 </template>
 
 <script>
     import SiderBar from '../components/slider'
+    import SliderTop from '../components/SliderTop'
 
     export default {
         data() {
             return {}
         },
         components: {
-            SiderBar
+            SiderBar,
+            SliderTop
         },
         methods: {
-            handleSelect(name) {
-                this.$router.push({name: name})
-            },
             exit() {
                 this.$store.dispatch('logout').then(() => {
                     this.$router.push('/login')
@@ -243,11 +198,10 @@
                 requestAnimationFrame(animateDots);
             }
         },
-        // beforeDestroy() {
-        //     this.$el.removeEventListener('mousemove')
-        //     this.$el.removeEventListener('mouseleave')
-        // },
         computed: {
+            fadeName() {
+                return this.$store.getters.backOrForward === 'back' ? 'fade-back' : 'fade-forward'
+            },
             routerList() {
                 return this.$route.matched.map(route => {
                     return {
@@ -260,6 +214,7 @@
         },
         mounted() {
             this.setCanvas()
+            console.log(this.$store.getters)
         }
     }
 </script>
@@ -274,6 +229,8 @@
         padding: 0;
         margin: 0;
         display: flex;
+        overflow: hidden;
+        align-items: center;
         flex-direction: column;
         background-color: rgba(7,17,27,0.95);
 
@@ -303,11 +260,29 @@
             }
         }
         .content {
-            width: 100%;
-            height: calc(100% - #{$headerHeight});
+            width: 97%;
+            height: calc(98.5% - #{$headerHeight});
+            background-color: rgba(7, 17, 27, 0.5);
             display: flex;
-            padding: 1rem 0;
+            /*padding: 0 2rem;*/
             z-index: 2;
+            margin-top: -1px;
+            overflow: auto;
+
+            &::-webkit-scrollbar {
+                width: 5px;
+                height: 5px;
+            }
+            &::-webkit-scrollbar-button {
+                display: none;
+            }
+            &::-webkit-scrollbar-track {
+                background-color: transparent;
+            }
+            &::-webkit-scrollbar-thumb {
+                border-radius: 5px;
+                background-color: rgba(7, 17, 27, 1);
+            }
         }
         .slider {
             width: $sideWidth;
@@ -347,6 +322,31 @@
         }
         .exit {
             text-align: center;
+        }
+        .fade-forward-enter-active, .fade-forward-leave-active {
+            transition: all .5s
+        }
+        .fade-back-enter-active, .fade-back-leave-active {
+            transition: all .5s
+        }
+
+        .fade-forward-enter {
+            opacity: 0;
+            transform: translateX(100%);
+        }
+        .fade-forward-leave-active {
+            position: absolute !important;
+            opacity: 0;
+            transform: translateX(-100%);
+        }
+        .fade-back-enter {
+            opacity: 0;
+            transform: translateX(-100%);
+        }
+        .fade-back-leave-active {
+            position: absolute !important;
+            opacity: 0;
+            transform: translateX(100%);
         }
     }
 </style>

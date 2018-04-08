@@ -8,31 +8,26 @@ export const login = data => {
     })
 }
 
-export const register = para => {
-    return new Promise((resolve, reject) => {
-        if(!para) {
-            reject()
-        }else {
-            setTimeout(() => {
-                resolve(1)
-            }, 1000)
-        }
+export const register = data => {
+    return fetch({
+        url: '/user/register',
+        method: 'post',
+        data
     })
 }
 
-export const getUserInfo = para => {
-    return new Promise((resolve, reject) => {
-        if(!para) {
-            reject()
-        }else {
-            setTimeout(() => {
-                resolve({
-                    id: para.id,
-                    account: 'admin',
-                    name: 'admin',
-                    role: '1'
-                })
-            }, 1000)
-        }
+export const checkAccountAvailable = data => {
+    return fetch({
+        url: '/user/accountIsAvailable',
+        method: 'post',
+        data
+    })
+}
+
+export const getUserInfo = data => {
+    return fetch({
+        url: '/user/getUserInfo',
+        method: 'post',
+        data
     })
 }

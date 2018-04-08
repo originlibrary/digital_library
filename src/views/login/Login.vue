@@ -2,19 +2,19 @@
     <div class="login-wrap">
         <div class="login-box">
             <div style="width: 200px">
-                <Input v-model="account">
+                <i-input v-model="account" class="iview-input">
                     <span slot="prepend">
                         <Icon type="person" slot="prepend"></Icon>
                     </span>
-                </Input>
-                <br />
-                <Input v-model="password" type="password">
-                    <span slot="prepend">
+                </i-input>
+                <br/>
+                <i-input v-model="password" type="password" class="iview-input" @on-enter="login">
+                <span slot="prepend">
                         <Icon type="locked" slo="prepend"></Icon>
                     </span>
-                </Input>
+                </i-input>
                 <div class="button">
-                    <a class="gv" href="javascript: void(0)" @click="login()">登录</a>
+                    <a class="gv" href="javascript: void(0)" @click="login">登录</a>
                 </div>
                 <div class="toregist">
                     还没有账号？<a href="javascript: void(0)" @click="goRegister">去注册</a>
@@ -25,20 +25,20 @@
 </template>
 
 <script>
-    import { login } from '../../api/user'
+    import {login} from '../../api/user'
 
     export default {
         data() {
             return {
                 account: this.$route.query.account || this.$store.getters.account || 'admin',
-                password: 'admin',
+                password: '',
                 pending: false
             }
         },
 
         methods: {
             login() {
-                if(this.pending || !this.account || !this.password) return
+                if (this.pending || !this.account || !this.password) return
                 this.pending = true
                 let closeMsg = this.$Message.loading({
                     content: '登录中...',
@@ -52,11 +52,20 @@
                     this.$store.dispatch('SetUserInfo', res).then(() => {
                         closeMsg()
                         this.pending = false
+                        this.$Message.success({
+                            content: '登录成功',
+                            duration: 3
+                        })
                         this.$router.push('/Home')
-                    }).catch(() => {})
-                }).catch(() => {
+                    }).catch(() => {
+                    })
+                }).catch(msg => {
                     closeMsg()
                     this.pending = false
+                    this.$Message.warning({
+                        content: msg || '登录失败',
+                        duration: 3
+                    })
                 })
             },
             goRegister() {
@@ -67,6 +76,23 @@
     }
 </script>
 
+<style lang="scss">
+    .login-wrap {
+
+        .iview-input {
+
+            .ivu-input-group-prepend {
+                background-color: transparent;
+                color: #fff;
+            }
+            input {
+                background-color: transparent;
+                color: #fff;
+            }
+        }
+    }
+</style>
+
 <style scoped lang="scss">
     .login-wrap {
         height: 100%;
@@ -76,7 +102,7 @@
         input:-webkit-autofill,
         input:-webkit-autofill:hover,
         input:-webkit-autofill:focus {
-            box-shadow:0 0 0 50px white inset!important;
+            box-shadow: 0 0 0 50px white inset !important;
         }
 
         .gv {

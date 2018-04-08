@@ -1,24 +1,47 @@
 <template>
     <div class="register-wrap">
         <div class="register-box">
-            <div>
-                <div class="input-wrap">
-                    <Icon type="edit" size="20" color="#fff"></Icon>
-                    <input type="text" placeholder="昵称" v-model="username">
+            <div style="width: 200px;" class="edit-box">
+                <div class="edit-row">
+                    <i-input v-model="username" placeholder="昵称" class="iview-input">
+                        <span slot="prepend">
+                            <Icon type="edit" slot="prepend"></Icon>
+                        </span>
+                    </i-input>
                 </div>
-                <div class="input-wrap">
-                    <Icon type="person" size="20" color="#fff"></Icon>
-                    <input type="text" placeholder="用户名" v-model="account">
+                <br/>
+                <div class="edit-row">
+                    <i-input v-model="account" placeholder="用户名" class="iview-input" @on-change="checkAccount">
+                        <span slot="prepend">
+                            <Icon type="edit" slot="prepend"></Icon>
+                        </span>
+                    </i-input>
+                    <span v-if="hasCheck" class="tip-box">
+                        <Icon type="checkmark" v-if="accountAvailable" color="green"></Icon>
+                        <Icon type="close-round" v-else color="red"></Icon>
+                    </span>
                 </div>
-                <div class="input-wrap">
-                    <Icon type="locked" size="20" color="#fff"></Icon>
-                    <input type="password" placeholder="密码" v-model="password">
+                <br/>
+                <div class="edit-row">
+                    <i-input v-model="password" placeholder="密码" class="iview-input">
+                        <span slot="prepend">
+                            <Icon type="locked" slot="prepend"></Icon>
+                        </span>
+                    </i-input>
                 </div>
-                <div class="input-wrap">
-                    <Icon type="locked" size="20" color="#fff"></Icon>
-                    <input :class="[!isSame ? 'un-same-password' : '']" type="password" placeholder="确认密码" v-model="password2" >
-                    <Icon v-if="!isSame" type="ios-information" style="color: red"></Icon>
+                <br/>
+                <div class="edit-row">
+                    <i-input v-model="password2" placeholder="确认密码" class="iview-input">
+                        <span slot="prepend">
+                            <Icon type="locked" slot="prepend"></Icon>
+                        </span>
+                    </i-input>
+                    <span v-if="password && password2" class="tip-box">
+                        <Icon type="checkmark" v-if="isSame" color="green"></Icon>
+                        <Icon type="close-round" v-else color="red"></Icon>
+                    </span>
                 </div>
+                <br/>
                 <div class="button">
                     <a class="gv" href="javascript: void(0)" @click="register">注册</a>
                 </div>
@@ -32,13 +55,15 @@
 </template>
 
 <script>
-    import {register} from '../../api/user'
+    import {register, checkAccountAvailable} from '../../api/user'
 
     export default {
         data() {
             return {
                 username: '',
                 account: '',
+                hasCheck: false,
+                accountAvailable: true,
                 password: '',
                 password2: '',
                 pending: false
@@ -49,9 +74,53 @@
                 return this.password === this.password2
             }
         },
+        mounted() {
+        },
         methods: {
+            checkAccount() {
+                checkAccountAvailable({
+                    account: this.account
+                }).then(res => {
+                    this.hasCheck = true
+                    this.accountAvailable = res
+                }).catch(msg => {
+                    this.hasCheck = true
+                    this.accountAvailable = false
+                    this.$Message.warning({
+                        content: msg
+                    })
+                })
+            },
             register() {
-                if(!this.isSame || this.pending) return
+                if(this.pending) return
+                if(!this.account) {
+                    this.$Message.warning({
+                        content: '请输入用户名',
+                        duration: 3
+                    })
+                    return
+                }
+                if(!this.hasCheck || !this.accountAvailable) {
+                    this.$Message.warning({
+                        content: '用户名不可用',
+                        duration: 3
+                    })
+                    return
+                }
+                if(!this.password) {
+                    this.$Message.warning({
+                        content: '请输入密码',
+                        duration: 3
+                    })
+                    return
+                }
+                if(!this.isSame) {
+                    this.$Message.warning({
+                        content: '两次密码不一致',
+                        duration: 3
+                    })
+                    return
+                }
                 let closeMsg = this.$Message.loading({
                     content: '注册中...',
                     duration: 0
@@ -60,20 +129,33 @@
                 let para = {
                     account: this.account,
                     password: this.password,
-                    username: this.username
+                    username: this.username || this.account
                 }
                 register(para).then(res => {
                     closeMsg()
-                    if(res === 1) {
+                    console.log('register res', res)
+                    if (res) {
                         //注册成功
                         this.pending = false
+                        this.$Message.success({
+                            content: '注册成功，马上去登录吧^_^',
+                            duration: 3
+                        })
                         this.back({
                             account: para.account
+                        })
+                    }else {
+                        this.$Message.warning({
+                            content: '注册失败，请检查信息',
+                            duration: 3
                         })
                     }
                 }).catch(() => {
                     closeMsg()
                     this.pending = false
+                    this.$Message.error({
+                        content: '注册失败'
+                    })
                 })
             },
             back(params) {
@@ -87,12 +169,48 @@
     }
 </script>
 
+<style lang="scss">
+    .register-wrap {
+
+        .iview-input {
+            width: 90%;
+
+            .ivu-input-group-prepend, .ivu-input-group-append {
+                background-color: transparent;
+                color: #fff;
+            }
+            input {
+                background-color: transparent;
+                color: #fff;
+            }
+        }
+    }
+</style>
+
 <style scoped lang="scss">
     .register-wrap {
         height: 100%;
         overflow: hidden;
         position: relative;
 
+        .edit-box {
+            width: 15rem;
+            margin-left: 1.5rem;
+        }
+        .edit-row {
+            width: 100%;
+            display: flex;
+            align-items: center;
+        }
+        .iview-input {
+            width: 90%;
+        }
+        .tip-box {
+            width: 10%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
         .back {
             position: fixed;
             left: 20px;
@@ -176,8 +294,11 @@
             padding: 0 5px;
         }
         .button {
-            margin-top: 30px;
-            margin-left: 60px
+            width: 100%;
+            height: 80px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
         .to-register {
             font-size: 12px;
