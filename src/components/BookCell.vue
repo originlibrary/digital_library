@@ -1,6 +1,8 @@
 <template>
     <div class="bookCell" @click="clickBook">
-        <img :src="data.coverUrl" alt="" class="bookCover">
+        <div class="bookImgBox">
+            <img :src="data.coverUrl" alt="" class="bookCover">
+        </div>
         <div class="bookMsg">
             {{data.name}}
         </div>
@@ -25,6 +27,7 @@
             }
         },
         data() {
+            console.log(this.data)
             return {
 
             }
@@ -45,11 +48,17 @@
         width: 12rem;
         text-align: center;
 
-        .bookCover {
+        .bookImgBox {
             width: 6.3rem;
             height: 7rem;
             box-shadow: 0 0 3px 3px #fff;
             border: 0;
+            margin: 0 auto;
+        }
+        .bookCover {
+            width: 100%;
+            height: 100%;
+            text-align: center;
         }
         .bookMsg {
             margin-top: 1rem;
