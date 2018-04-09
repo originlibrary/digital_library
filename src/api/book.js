@@ -16,11 +16,11 @@ export const getAllTypes = () => {
     })
 }
 
-export const deleteType = () => {
+export const deleteType = data => {
     return fetch({
         url: '/BookType/deleteType',
         method: 'post',
-        data: {}
+        data
     })
 }
 
