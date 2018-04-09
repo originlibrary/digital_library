@@ -7,3 +7,35 @@ export const getBookStrap = () => {
         data: {}
     })
 }
+
+export const getAllTypes = () => {
+    return fetch({
+        url: '/BookType/getAllTypes',
+        method: 'post',
+        data: {}
+    })
+}
+
+export const deleteType = () => {
+    return fetch({
+        url: '/BookType/deleteType',
+        method: 'post',
+        data: {}
+    })
+}
+
+export const addType = data => {
+    return fetch({
+        url: '/BookType/addType',
+        method: 'post',
+        data
+    })
+}
+
+export const updateType = data => {
+    return fetch({
+        url: '/BookType/updateType',
+        method: 'post',
+        data
+    })
+}

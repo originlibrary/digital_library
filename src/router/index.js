@@ -10,6 +10,7 @@ import Login from '../views/login/Login'
 import Register from '../views/login/Register'
 import Hello from '../views/Hello'
 import Book from '../views/book'
+import BookType from '../views/book/bookType'
 import BookStrap from '../views/book/bookstrap'
 import Download from '../views/download'
 import User from '../views/user'
@@ -58,6 +59,12 @@ const router = new Router({
                             meta: { label: '图书', index: 1},
                             name: 'BookStrap',
                             component: BookStrap
+                        },
+                        {
+                            path: '/BookType',
+                            meta: { label: '图书', index: 1},
+                            name: 'BookType',
+                            component: BookType
                         }
                     ]
                 },

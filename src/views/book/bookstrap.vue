@@ -15,7 +15,7 @@
         <!--<br />-->
         <!--</template>-->
         <div class="button-box">
-            <div class="managerButton">管理图书</div>
+            <div class="managerButton" @click="gotoBookType">管理图书</div>
         </div>
         <div class="bookstrap" v-for="(item, i) in list" :key="item.typeMsg.id || i">
             <div class="typeMsg">{{item.typeMsg.name}}</div>
@@ -58,6 +58,9 @@
         computed: {
         },
         methods: {
+            gotoBookType() {
+                this.$router.push('/BookType')
+            },
             getList() {
                 getBookStrap().then(res => {
                     this.list = this.formatRes(res)
