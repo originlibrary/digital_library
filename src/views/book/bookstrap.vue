@@ -14,10 +14,19 @@
         <!--</Row>-->
         <!--<br />-->
         <!--</template>-->
+        <div class="button-box">
+            <div class="managerButton" @click="gotoBookType">管理图书</div>
+        </div>
         <div class="bookstrap" v-for="(item, i) in list" :key="item.typeMsg.id || i">
             <div class="typeMsg">{{item.typeMsg.name}}</div>
             <div class="book-list">
-                <div :class="['book', book === 'more' ? 'book-more' : '']" v-for="book in item.books">
+                <div v-for="(book,bi) in item.books" :key="book.id || bi" class="book">
+                    <BookCell :data="book" v-if="book !== 'more'"/>
+                    <div v-if="book === 'more'" class="book-more-box">
+                        <Icon type="more" class="book-more-icon"></Icon>
+                    </div>
+                </div>
+                <!--<div :class="['book', book === 'more' ? 'book-more' : '']" v-for="book in item.books">
                     <img :src="book.coverUrl" alt="" class="bookCover" v-if="book !== 'more'">
                     <div class="bookMsg" v-if="book !== 'more'">
                         {{book.name}}
@@ -26,7 +35,7 @@
                     <div v-if="book === 'more'" class="book-more-box">
                         <Icon type="more" class="book-more-icon"></Icon>
                     </div>
-                </div>
+                </div>-->
             </div>
         </div>
     </section>
@@ -49,6 +58,9 @@
         computed: {
         },
         methods: {
+            gotoBookType() {
+                this.$router.push('/BookType')
+            },
             getList() {
                 getBookStrap().then(res => {
                     this.list = this.formatRes(res)
@@ -61,8 +73,8 @@
                 if(!list instanceof Array) return []
                 return list.map(item => {
                     item.books.forEach(book => {
-                        // book.coverUrl = (process.env.NODE_ENV === 'development' ? 'localhost:8033' : '') + book.coverUrl
-                        book.coverUrl = '/api' + book.coverUrl
+                        book.coverUrl = (process.env.NODE_ENV === 'development' ? 'http://localhost:8033' : '') + book.coverUrl
+                        // book.coverUrl = '/api' + book.coverUrl
                         book.averageScore = book.averageScore ? parseInt(book.averageScore) : 0
                     })
                     item.books.push('more')
@@ -71,7 +83,8 @@
             }
         },
         components: {
-            ScoreTool
+            ScoreTool,
+            BookCell
         }
     }
 </script>
@@ -89,6 +102,7 @@
             background-repeat: round;
             opacity: 0.85;
             box-shadow: 0 0 2px 0 #fff;
+            position: relative;
         }
         .typeMsg {
             position: absolute;
@@ -106,7 +120,7 @@
         .book {
             width: 12rem;
             flex: none;
-            margin: 0 5rem;
+            margin: 0 4.5rem;
             background-repeat: round;
             text-align: center;
             transition: all .3s;
@@ -157,6 +171,25 @@
             font-size: 3rem;
             color: inherit;
             transition: color .3s;
+        }
+        .button-box {
+            margin-bottom: 1.5rem;
+        }
+        .managerButton {
+            user-select: none;
+            display: inline-block;
+            color: #fff;
+            border: 1px solid #fff;
+            border-radius: 3px;
+            padding: 0.5rem 1rem;
+            cursor: pointer;
+            transition: .2s;
+
+            &:hover {
+                background-color: #fff;
+                color: #000;
+                border-color: #fff;
+            }
         }
     }
 </style>
