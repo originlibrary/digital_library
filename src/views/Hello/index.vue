@@ -43,7 +43,7 @@
                     <div class="book-item-container" :key="recommend.id" v-for="(recommend,index) in recommendData">
                         <em class="book-item-index">{{index + 1}}.</em>
                         <div class="book-item-image-container">
-                            <img :src="recommend.cover_url" alt="" class="book-item-image">
+                            <img :src="'/api' + recommend.cover_url" alt="" class="book-item-image">
                         </div>
                         <h3>{{recommend.name}}</h3>
                         <p>{{recommend.translator}}</p>
