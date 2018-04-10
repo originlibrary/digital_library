@@ -73,8 +73,7 @@
                 if(!list instanceof Array) return []
                 return list.map(item => {
                     item.books.forEach(book => {
-                        book.coverUrl = (process.env.NODE_ENV === 'development' ? 'http://localhost:8033' : '') + book.coverUrl
-                        // book.coverUrl = '/api' + book.coverUrl
+                        book.coverUrl = '/api' + book.coverUrl
                         book.averageScore = book.averageScore ? parseInt(book.averageScore) : 0
                     })
                     item.books.push('more')
