@@ -1,10 +1,16 @@
 <template>
     <section class="book-manager-wrap">
         <div class="header">
-            <Searchbar placeholder="按昵称搜索" @search="searchByName" class="searchTool"/>
-            <Searchbar placeholder="按用户名搜索" @search="searchByAccount" class="searchTool"/>
+            <div class="managerButton" @click="goBack">返回</div>
+            <input type="file" ref="upload" @change="uploadBook" v-show="false">
+            <div class="managerButton" @click="goBack">上传</div>
+            <Searchbar placeholder="按书名搜索" v-model="filter.name" @search="searchByName" class="searchTool"/>
+            <Searchbar placeholder="按作者搜索" v-model="filter.author" @search="searchByAuthor" class="searchTool"/>
         </div>
         <div class="main">
+            <!--<div class="book-list">-->
+                <!--<BookCell2 v-for="(book, i) in data" :idx="i" :data="book" :key="book.id"/>-->
+            <!--</div>-->
             <Table :width="tableWidth" :loading="loading" :row-class-name="rowClassName" :columns="columns" :data="data"></Table>
         </div>
         <!--<div class="footer"></div>-->
@@ -13,57 +19,64 @@
 
 <script>
     import Searchbar from '../../components/Searchbar'
-    import {getUserList, setHighRole, deleteUser} from '../../api/user'
+    import BookCell2 from '../../components/BookCell2'
+    import ScoreTool from '../../components/ScoreTool'
+    import {getBookByType, deleteBook} from '../../api/book'
 
     export default {
         data() {
             return {
                 columns: [
                     {
-                        title: '昵称',
-                        key: 'username',
+                        title: '书名',
+                        key: 'name',
                         // width: 200,
                         align: 'center'
                     },
                     {
-                        title: '用户名',
-                        key: 'account',
+                        title: '类型',
+                        key: 'typeName',
                         // width: 200,
                         align: 'center'
                     },
                     {
-                        title: '下载次数',
-                        key: 'downloadCount',
+                        title: '作者',
+                        key: 'author',
                         // width: 200,
                         align: 'center'
                     },
                     {
-                        title: '权限',
-                        key: 'role',
+                        title: '译者',
+                        key: 'translator',
+                        // width: 200,
+                        align: 'center'
+                    },
+                    {
+                        title: '语言',
+                        key: 'language',
+                        // width: 200,
+                        align: 'center'
+                    },
+                    {
+                        title: '版本',
+                        key: 'version',
+                        // width: 200,
+                        align: 'center'
+                    },
+                    {
+                        title: '大小',
+                        key: 'version',
+                        // width: 200,
+                        align: 'center'
+                    },
+                    {
+                        title: '评分',
+                        key: 'version',
                         // width: 200,
                         align: 'center',
                         render: (h, params) => {
-                            console.log(params)
-                            let roleLabel, role = params.row.role
-                            switch (role) {
-                                case 1: {
-                                    roleLabel = '超级管理员'
-                                    break
-                                }
-                                case 2: {
-                                    roleLabel = '管理员'
-                                    break
-                                }
-                                case 3: {
-                                    roleLabel = '游客'
-                                    break
-                                }
-                                default: {
-                                    roleLabel = '游客'
-                                }
-                            }
                             return (
-                                <span>{roleLabel}</span>
+                                <ScoreTool value={params.row.average_score} noSet/>
                             )
                         }
                     },
@@ -98,10 +111,11 @@
                 ],
                 data: [],
                 filter: {
-                    username: '',
-                    account: ''
+                    type: this.$route.query.type || '',
+                    name: '',
+                    author: ''
                 },
-                tableWidth: window.innerWidth * 0.9,
+                tableWidth: window.innerWidth * 0.92,
                 loading: false
             }
         },
@@ -111,12 +125,12 @@
             }
         },
         methods: {
-            deleteUser(id) {
+            deleteBook(id) {
                 this.$Modal.confirm({
                     title: '删除',
-                    content: '确认删除该用户？',
+                    content: '确认删除该书籍？',
                     onOk: () => {
-                        deleteUser({id}).then(() => {
+                        deleteBook({id}).then(() => {
                             this.$Message.success({
                                 content: '删除成功',
                                 duration: 3
@@ -135,27 +149,8 @@
                     cancelText: '取消'
                 });
             },
-            setHighRole(id) {
-                setHighRole({id}).then(() => {
-                    this.$Message.success({
-                        content: '设置成功',
-                        duration: 3
-                    })
-                    this.getData()
-                }).catch(() => {
-                    this.$Message.warning({
-                        content: '设置失败',
-                        duration: 3
-                    })
-                })
-            },
-            searchByName(name) {
-                this.filter.username = name
-                this.getData()
-            },
-            searchByAccount(account) {
-                this.filter.account = account
-                this.getData()
+            uploadBook() {
+
             },
             rowClassName (row, index) {
                 if(index % 2 === 0) {
@@ -164,9 +159,23 @@
                     return 'table-row-second'
                 }
             },
+            clickUpload(id) {
+                this.$refs.upload.onclick()
+            },
+            searchByName(name) {
+                this.filter.name = name
+                this.getData()
+            },
+            searchByAuthor(author) {
+                this.filter.author = author
+                this.getData()
+            },
+            goBack() {
+                this.$router.go(-1)
+            },
             doPost(cb) {
                 let para = this.filter
-                getUserList(para).then(res => {
+                getBookByType(para).then(res => {
                     console.log(res)
                     cb && cb(res)
                 }).catch(() => {
@@ -183,7 +192,9 @@
             }
         },
         components: {
-            Searchbar
+            Searchbar,
+            BookCell2,
+            ScoreTool
         },
         mounted() {
             this.getData()
@@ -279,17 +290,36 @@
         .header {
             height: 4rem;
             display: flex;
+            align-items: center;
 
             .searchTool {
+                display: inline-block;
                 margin-right: 2rem;
+                flex: none;
+            }
+            .managerButton {
+                flex: none;
+                user-select: none;
+                display: inline-block;
+                color: #fff;
+                margin-right: 1.5rem;
+                border: 1px solid #fff;
+                border-radius: 3px;
+                padding: 0.5rem 1rem;
+                cursor: pointer;
+                transition: .2s;
+
+                &:hover {
+                    background-color: #fff;
+                    color: #000;
+                    border-color: #fff;
+                }
             }
         }
         .main {
-            height: calc(100% - 4rem);
+            margin-top: 1rem;
+            height: calc(100% - 5rem);
             /*background-color: rgba(0, 0, 0, .1);*/
         }
-        /*.footer {*/
-        /*height: 4rem;*/
-        /*}*/
     }
 </style>

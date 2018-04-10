@@ -17,10 +17,10 @@
         <div class="button-box">
             <div class="managerButton" @click="gotoBookType">管理图书</div>
         </div>
-        <div class="bookstrap" v-for="(item, i) in list" :key="item.typeMsg.id || i">
+        <div class="bookstrap" v-for="(item, i) in list" :key="item.typeMsg.id">
             <div class="typeMsg">{{item.typeMsg.name}}</div>
             <div class="book-list">
-                <div v-for="(book,bi) in item.books" :key="book.id || bi" class="book">
+                <div v-for="(book,bi) in item.books" :key="book.id" class="book">
                     <BookCell :data="book" v-if="book !== 'more'"/>
                     <div v-if="book === 'more'" class="book-more-box">
                         <Icon type="more" class="book-more-icon"></Icon>

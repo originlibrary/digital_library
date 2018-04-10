@@ -8,7 +8,7 @@
         <div class="main">
             <div class="type-list">
                 <div class="list-item type-item-add" @click="addFolder"></div>
-                <div class="list-item type-item" v-for="(item, i) in list" :key="item.id || i" @click="gotoBookList">
+                <div class="list-item type-item" v-for="(item, i) in list" :key="item.id || i" @click="gotoBookList(item.id)">
                     <i class="ivu-icon toolIcon editFolder ivu-icon-edit" @click.stop="editFolder(i)" title="修改"></i>
                     <i class="ivu-icon toolIcon deleteFolder ivu-icon-android-delete" @click.stop="deleteFolder(item.id)"
                        title="删除"></i>
@@ -68,9 +68,14 @@
             }
         },
         methods: {
-            gotoBookList() {
+            gotoBookList(id) {
                 console.log(11)
-                // this.$router.push('/BookList')
+                this.$router.push({
+                    path: '/BookManager',
+                    query: {
+                        type: id
+                    }
+                })
             },
             submit() {
                 this.$refs.form.validate((valid) => {

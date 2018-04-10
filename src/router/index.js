@@ -12,6 +12,7 @@ import Hello from '../views/Hello'
 import Book from '../views/book'
 import BookType from '../views/book/bookType'
 import BookStrap from '../views/book/bookstrap'
+import BookManager from '../views/book/bookManager'
 import Download from '../views/download'
 import User from '../views/user'
 
@@ -56,15 +57,21 @@ const router = new Router({
                     children: [
                         {
                             path: '/BookStrap',
-                            meta: { label: '图书', index: 1},
+                            meta: { label: '图书', index: 1, parentIndex: 1},
                             name: 'BookStrap',
                             component: BookStrap
                         },
                         {
                             path: '/BookType',
-                            meta: { label: '图书', index: 1},
+                            meta: { label: '图书', index: 2, parentIndex: 1},
                             name: 'BookType',
                             component: BookType
+                        },
+                        {
+                            path: '/BookManager',
+                            meta: { label: '图书', index: 3, parentIndex: 1},
+                            name: 'BookManager',
+                            component: BookManager
                         }
                     ]
                 },

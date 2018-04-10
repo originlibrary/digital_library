@@ -1,28 +1,51 @@
 <template>
     <section class="book-index">
-        <transition name="fade">
+        <transition :name="fadeName">
             <router-view/>
         </transition>
     </section>
 </template>
 
 <script>
-    export default {}
+    export default {
+        computed: {
+            fadeName() {
+                return this.$store.getters.backOrForward === 'back' ? 'fade-back' : 'fade-forward'
+            }
+        }
+    }
 </script>
 
 <style lang="scss" scoped>
     .book-index {
         width: 100%;
         height: 100%;
+        position: relative;
 
-        .fade-enter-active, .fade-leave-active {
-            transition: all .2s
+        .fade-forward-enter-active, .fade-forward-leave-active {
+            transition: all .5s
         }
-        .fade-enter {
-            opacity: 0;
+        .fade-back-enter-active, .fade-back-leave-active {
+            transition: all .5s
         }
-        .fade-leave-active {
+
+        .fade-forward-enter {
             opacity: 0;
+            transform: translateX(100%);
+        }
+        .fade-forward-leave-active {
+            position: absolute !important;
+            opacity: 0;
+            transform: translateX(-100%);
+        }
+        .fade-back-enter {
+            opacity: 0;
+            transform: translateX(-100%);
+        }
+        .fade-back-leave-active {
+            position: absolute !important;
+            opacity: 0;
+            transform: translateX(100%);
         }
     }
 </style>

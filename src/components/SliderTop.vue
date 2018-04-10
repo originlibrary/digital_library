@@ -50,7 +50,7 @@
         },
         methods: {
             isCurrent(item) {
-                return this.$route.path === item.path || this.$route.meta.index === item.index
+                return this.$route.path === item.path || this.$route.meta.parentIndex === item.index
             }
         }
     }
