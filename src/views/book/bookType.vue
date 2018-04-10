@@ -57,7 +57,7 @@
                 },
                 formRules: {
                     name: [
-                        { required: true, message: '类别名称不能为空', trigger: 'change' }
+                        { required: true, message: '类别名称不能为空', trigger: 'blur' }
                     ]
                 }
             }
