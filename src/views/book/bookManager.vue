@@ -3,7 +3,7 @@
         <div class="header">
             <div class="managerButton" @click="goBack">返回</div>
             <input type="file" ref="upload" @change="uploadBook" v-show="false">
-            <div class="managerButton" @click="goBack">上传</div>
+            <div class="managerButton" @click="goBack">上传图书</div>
             <Searchbar placeholder="按书名搜索" v-model="filter.name" @search="searchByName" class="searchTool"/>
             <Searchbar placeholder="按作者搜索" v-model="filter.author" @search="searchByAuthor" class="searchTool"/>
         </div>
@@ -13,6 +13,31 @@
             <!--</div>-->
             <Table :width="tableWidth" :loading="loading" :row-class-name="rowClassName" :columns="columns" :data="data"></Table>
         </div>
+        <Modal
+            v-model="modal"
+            :title="isEdit ? '修改图书' : '上传图书'">
+            <Form ref="form" :model="form" :rules="formRules" :label-width="60" style="width: 95%;">
+                <FormItem label="名称" prop="name">
+                    <Input v-model="form.name" placeholder="输入名称"/>
+                </FormItem>
+                <FormItem label="作者">
+                    <Input v-model="form.author" placeholder="输入描述"/>
+                </FormItem>
+                <FormItem label="译者">
+                    <Input v-model="form.translator" placeholder="输入描述"/>
+                </FormItem>
+                <FormItem label="版本">
+                    <Input v-model="form.version" placeholder="输入描述"/>
+                </FormItem>
+                <FormItem label="语言">
+                    <Input v-model="form.language" placeholder="输入描述"/>
+                </FormItem>
+            </Form>
+            <span slot="footer">
+                <Button @click="modal = false">取消</Button>
+                <Button type="primary" @click="submit">确定</Button>
+            </span>
+        </Modal>
         <!--<div class="footer"></div>-->
     </section>
 </template>
@@ -116,7 +141,22 @@
                     author: ''
                 },
                 tableWidth: window.innerWidth * 0.92,
-                loading: false
+                loading: false,
+                isEdit: false,
+                form: {
+                    name: '',
+                    author: '',
+                    translator: '',
+                    version: '',
+                    language: '',
+                    coverUrl: '',
+                    type: ''
+                },
+                formRules: {
+                    name: [
+                        { required: true, message: '类别名称不能为空', trigger: 'change' }
+                    ]
+                }
             }
         },
         computed: {
@@ -125,6 +165,9 @@
             }
         },
         methods: {
+            submit() {
+
+            },
             deleteBook(id) {
                 this.$Modal.confirm({
                     title: '删除',

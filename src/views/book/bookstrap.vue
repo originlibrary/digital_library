@@ -103,6 +103,22 @@
             opacity: 0.85;
             box-shadow: 0 0 2px 0 #fff;
             position: relative;
+            overflow: auto;
+
+            &::-webkit-scrollbar {
+                width: 10px;
+                height: 10px;
+            }
+            &::-webkit-scrollbar-button {
+                display: none;
+            }
+            &::-webkit-scrollbar-track {
+                background-color: rgba(6, 8, 17, .5);
+            }
+            &::-webkit-scrollbar-thumb {
+                border-radius: 10px;
+                background-color: rgb(6, 8, 17);
+            }
         }
         .typeMsg {
             position: absolute;
