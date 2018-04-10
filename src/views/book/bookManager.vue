@@ -37,10 +37,10 @@
                     <Input v-model="form.language" placeholder="输入语言"/>
                 </FormItem>
                 <FormItem label="上传封面" v-if="!isEdit">
-                    <Upload v-if="modal"/>
+                    <Upload v-if="modal" @success="res => form.coverUrl = res"/>
                 </FormItem>
                 <FormItem label="上传图书" v-if="!isEdit">
-                    <Upload v-if="modal"/>
+                    <Upload v-if="modal" @fileChange="size => fileSize = size" @success="res => form.fileUrl = res"/>
                 </FormItem>
             </Form>
             <span slot="footer">
@@ -57,7 +57,7 @@
     import BookCell2 from '../../components/BookCell2'
     import ScoreTool from '../../components/ScoreTool'
     import Upload from '../../components/Upload'
-    import {getBookByType, deleteBook, getAllTypes} from '../../api/book'
+    import {getBookByType, deleteBook, getAllTypes, uploadBook, updateBook} from '../../api/book'
 
     export default {
         data() {
@@ -122,14 +122,12 @@
                         // width: 300,
                         align: 'center',
                         render: (h, params) => {
-                            const role = params.row.role,
-                                id = params.row.id
                             return (
                                 <div class="button-box">
                                     <div class="button-item" onClick={() => this.editBook(params.row)}>
                                         编辑
                                     </div>
-                                    <div class="button-item" onClick={() => this.deleteUser(id)}>
+                                    <div class="button-item" onClick={() => this.deleteBook(params.row.id)}>
                                         删除
                                     </div>
                                 </div>
@@ -154,8 +152,10 @@
                     version: '',
                     language: '',
                     coverUrl: '',
-                    type: ''
+                    type: '',
+                    fileUrl: ''
                 },
+                fileSize: '',
                 formRules: {
                     name: [
                         { required: true, message: '类别名称不能为空', trigger: 'blur' }
@@ -171,7 +171,37 @@
         },
         methods: {
             submit() {
-
+                if(this.isEdit) {
+                    updateBook(this.form).then(res => {
+                        this.$Message.success({
+                            content: '更新成功',
+                            duration: 3
+                        })
+                        this.modal = false
+                    }).catch(() => {
+                        this.$Message.warning({
+                            content: '更新失败',
+                            duration: 3
+                        })
+                        // this.modal = false
+                    })
+                }else {
+                    uploadBook({
+                        ...this.form,
+                        byteSize: this.fileSize
+                    }).then(res => {
+                        this.$Message.success({
+                            content: '添加成功',
+                            duration: 3
+                        })
+                        this.modal = false
+                    }).catch(() => {
+                        this.$Message.warning({
+                            content: '添加失败',
+                            duration: 3
+                        })
+                    })
+                }
             },
             editBook(book) {
                 console.log(book)
@@ -203,9 +233,6 @@
                 }
                 this.modal = true
             },
-            uploadBookImage() {
-
-            },
             deleteBook(id) {
                 this.$Modal.confirm({
                     title: '删除',
@@ -230,18 +257,12 @@
                     cancelText: '取消'
                 });
             },
-            uploadBook() {
-
-            },
             rowClassName (row, index) {
                 if(index % 2 === 0) {
                     return 'table-row-first'
                 }else {
                     return 'table-row-second'
                 }
-            },
-            clickUpload(id) {
-                this.$refs.upload.onclick()
             },
             searchByName(name) {
                 this.filter.name = name

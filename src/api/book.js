@@ -71,9 +71,26 @@ export const getBookByType = data => {
         data
     })
 }
+
 export const deleteBook = data => {
     return fetch({
         url: '/Book/deleteBook',
+        method: 'post',
+        data
+    })
+}
+
+export const uploadBook = data => {
+    return fetch({
+        url: '/Book/uploadBook',
+        method: 'post',
+        data
+    })
+}
+
+export const updateBook = data => {
+    return fetch({
+        url: '/Book/updateBook',
         method: 'post',
         data
     })

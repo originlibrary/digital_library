@@ -19,6 +19,7 @@
 
     export default {
         props: {
+            fileName: String,
             placeholder: {
                 type: String,
                 default: '点击上传'
@@ -33,6 +34,7 @@
         methods: {
             handleUpload(file) {
                 this.file = file
+                this.$emit('fileChange', this.file.length)
                 return false
             },
             uploadPercent(percent) {
@@ -50,6 +52,7 @@
                 upload(form, percent => this.uploadPercent(percent)).then(res => {
                     this.loadingStatus = false
                     if(res.status === 200 && res.data.code === 200) {
+                        this.$emit('success', '')
                         this.$Message.success({
                             content: '上传成功',
                             duration: 1
