@@ -1,17 +1,18 @@
 <template>
-    <section class="book-index">
-        <router-view/>
+    <section class="book-detail">
+
     </section>
 </template>
 
 <script>
+    export default {
 
-    export default {}
+    }
 </script>
 
 <style lang="scss" scoped>
-    .book-index {
+    .book-detail {
+        padding: 1rem 2rem;
         width: 100%;
-        height: 100%;
     }
 </style>

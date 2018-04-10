@@ -1,8 +1,8 @@
 <template>
     <section class="user-wrap">
         <div class="header">
-            <Searchbar placeholder="按昵称搜索" v-model="filter.username" @search="searchByName" class="searchTool"/>
-            <Searchbar placeholder="按用户名搜索" v-model="filter.account" @search="searchByAccount" class="searchTool"/>
+            <Searchbar placeholder="按昵称搜索" @search="searchByName" class="searchTool"/>
+            <Searchbar placeholder="按用户名搜索" @search="searchByAccount" class="searchTool"/>
         </div>
         <div class="main">
             <Table :width="tableWidth" :loading="loading" :row-class-name="rowClassName" :columns="columns" :data="data"></Table>

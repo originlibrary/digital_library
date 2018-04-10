@@ -8,49 +8,26 @@ export const getBookStrap = () => {
     })
 }
 
-export const getAllTypes = () => {
+export const getDownloadTopFive = () => {
     return fetch({
-        url: '/BookType/getAllTypes',
+        url: '/Book/getDownloadTopFive',
         method: 'post',
         data: {}
     })
 }
 
-export const deleteType = data => {
+export const getScoreTopFive = () => {
     return fetch({
-        url: '/BookType/deleteType',
+        url: '/Book/getScoreTopFive',
         method: 'post',
-        data
+        data: {}
     })
 }
 
-export const addType = data => {
+export const getRecommendTop = () => {
     return fetch({
-        url: '/BookType/addType',
+        url: '/Book/getRecommendTop',
         method: 'post',
-        data
-    })
-}
-
-export const updateType = data => {
-    return fetch({
-        url: '/BookType/updateType',
-        method: 'post',
-        data
-    })
-}
-
-export const getBookByType = data => {
-    return fetch({
-        url: '/Book/getBookByType',
-        method: 'post',
-        data
-    })
-}
-export const deleteBook = data => {
-    return fetch({
-        url: '/Book/deleteBook',
-        method: 'post',
-        data
+        data: {}
     })
 }

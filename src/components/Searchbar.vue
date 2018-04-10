@@ -1,6 +1,6 @@
 <template>
     <div class="search-bar">
-        <input type="text" class="input-wrap" v-model="alignValue" :placeholder="placeholder" @keydown.enter="search">
+        <input type="text" class="input-wrap" v-model="keyword" :placeholder="placeholder" @keydown.enter="search">
         <a href="javascript:void(0)" class="input-button" @click="search">
             <Icon type="ios-search-strong" size="20" style="line-height: inherit"></Icon>
         </a>
@@ -9,29 +9,15 @@
 
 <script>
     export default {
-        model: {
-            prop: 'value',
-            event: 'change'
-        },
-        props: ['placeholder', 'value'],
+        props: ['placeholder'],
         data() {
             return {
                 keyword: ''
             }
         },
-        computed: {
-            alignValue: {
-                get() {
-                    return this.value
-                },
-                set(v) {
-                    this.$emit('change', v)
-                }
-            }
-        },
         methods: {
             search() {
-                this.$emit('search', this.value)
+                this.$emit('search', this.keyword)
             }
         }
     }
@@ -40,8 +26,8 @@
 <style scoped lang="scss">
     .search-bar {
         width: 400px;
-        /*height: 46px;*/
-        /*line-height: 46px;*/
+        height: 46px;
+        line-height: 46px;
     }
 
     .search-bar .input-wrap {
