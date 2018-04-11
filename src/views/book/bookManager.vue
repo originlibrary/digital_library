@@ -2,8 +2,7 @@
     <section class="book-manager-wrap">
         <div class="header">
             <div class="managerButton" @click="goBack">返回</div>
-            <input type="file" ref="upload" @change="uploadBook" v-show="false">
-            <div class="managerButton" @click="goBack">上传图书</div>
+            <div class="managerButton" @click="addBook">上传图书</div>
             <Searchbar placeholder="按书名搜索" v-model="filter.name" @search="searchByName" class="searchTool"/>
             <Searchbar placeholder="按作者搜索" v-model="filter.author" @search="searchByAuthor" class="searchTool"/>
         </div>
@@ -20,17 +19,28 @@
                 <FormItem label="名称" prop="name">
                     <Input v-model="form.name" placeholder="输入名称"/>
                 </FormItem>
+                <FormItem label="选择类型">
+                    <Select v-model="form.type" placeholder="选择类型">
+                        <Option v-for="type in typeList" :value="type.id" :key="type.id">{{ type.name }}</Option>
+                    </Select>
+                </FormItem>
                 <FormItem label="作者">
-                    <Input v-model="form.author" placeholder="输入描述"/>
+                    <Input v-model="form.author" placeholder="输入作者"/>
                 </FormItem>
                 <FormItem label="译者">
-                    <Input v-model="form.translator" placeholder="输入描述"/>
+                    <Input v-model="form.translator" placeholder="输入译者"/>
                 </FormItem>
                 <FormItem label="版本">
-                    <Input v-model="form.version" placeholder="输入描述"/>
+                    <Input v-model="form.version" placeholder="输入版本"/>
                 </FormItem>
                 <FormItem label="语言">
-                    <Input v-model="form.language" placeholder="输入描述"/>
+                    <Input v-model="form.language" placeholder="输入语言"/>
+                </FormItem>
+                <FormItem label="上传封面" v-if="!isEdit">
+                    <Upload v-if="modal" @success="res => form.coverUrl = res"/>
+                </FormItem>
+                <FormItem label="上传图书" v-if="!isEdit">
+                    <Upload v-if="modal" @fileChange="size => fileSize = size" @success="res => form.fileUrl = res"/>
                 </FormItem>
             </Form>
             <span slot="footer">
@@ -46,7 +56,8 @@
     import Searchbar from '../../components/Searchbar'
     import BookCell2 from '../../components/BookCell2'
     import ScoreTool from '../../components/ScoreTool'
-    import {getBookByType, deleteBook} from '../../api/book'
+    import Upload from '../../components/Upload'
+    import {getBookByType, deleteBook, getAllTypes, uploadBook, updateBook} from '../../api/book'
 
     export default {
         data() {
@@ -111,24 +122,14 @@
                         // width: 300,
                         align: 'center',
                         render: (h, params) => {
-                            const role = params.row.role,
-                                id = params.row.id
                             return (
                                 <div class="button-box">
-                                    {
-                                        this.role === 1 && role === 3 ? (
-                                            <div class="button-item" onClick={() => {this.setHighRole(id)}}>
-                                                设为管理员
-                                            </div>
-                                        ) : null
-                                    }
-                                    {
-                                        this.role === 1 && role !== 1 ? (
-                                            <div class="button-item" onClick={() => this.deleteUser(id)}>
-                                                删除
-                                            </div>
-                                        ) : null
-                                    }
+                                    <div class="button-item" onClick={() => this.editBook(params.row)}>
+                                        编辑
+                                    </div>
+                                    <div class="button-item" onClick={() => this.deleteBook(params.row.id)}>
+                                        删除
+                                    </div>
                                 </div>
                             )
                         }
@@ -143,6 +144,7 @@
                 tableWidth: window.innerWidth * 0.92,
                 loading: false,
                 isEdit: false,
+                modal: false,
                 form: {
                     name: '',
                     author: '',
@@ -150,13 +152,16 @@
                     version: '',
                     language: '',
                     coverUrl: '',
-                    type: ''
+                    type: '',
+                    fileUrl: ''
                 },
+                fileSize: '',
                 formRules: {
                     name: [
-                        { required: true, message: '类别名称不能为空', trigger: 'change' }
+                        { required: true, message: '类别名称不能为空', trigger: 'blur' }
                     ]
-                }
+                },
+                typeList: []
             }
         },
         computed: {
@@ -166,7 +171,67 @@
         },
         methods: {
             submit() {
-
+                if(this.isEdit) {
+                    updateBook(this.form).then(res => {
+                        this.$Message.success({
+                            content: '更新成功',
+                            duration: 3
+                        })
+                        this.modal = false
+                    }).catch(() => {
+                        this.$Message.warning({
+                            content: '更新失败',
+                            duration: 3
+                        })
+                        // this.modal = false
+                    })
+                }else {
+                    uploadBook({
+                        ...this.form,
+                        byteSize: this.fileSize
+                    }).then(res => {
+                        this.$Message.success({
+                            content: '添加成功',
+                            duration: 3
+                        })
+                        this.modal = false
+                    }).catch(() => {
+                        this.$Message.warning({
+                            content: '添加失败',
+                            duration: 3
+                        })
+                    })
+                }
+            },
+            editBook(book) {
+                console.log(book)
+                this.isEdit = true
+                this.form = {
+                    ...this.form,
+                    ...{
+                        name: book.name,
+                        author: book.author,
+                        translator: book.translator,
+                        version: book.version,
+                        language: book.language,
+                        coverUrl: book.coverUrl,
+                        type: parseInt(book.type)
+                    }
+                }
+                this.modal = true
+            },
+            addBook() {
+                this.isEdit = false
+                this.form = {
+                    name: '',
+                    author: '',
+                    translator: '',
+                    version: '',
+                    language: '',
+                    coverUrl: '',
+                    type: ''
+                }
+                this.modal = true
             },
             deleteBook(id) {
                 this.$Modal.confirm({
@@ -192,18 +257,12 @@
                     cancelText: '取消'
                 });
             },
-            uploadBook() {
-
-            },
             rowClassName (row, index) {
                 if(index % 2 === 0) {
                     return 'table-row-first'
                 }else {
                     return 'table-row-second'
                 }
-            },
-            clickUpload(id) {
-                this.$refs.upload.onclick()
             },
             searchByName(name) {
                 this.filter.name = name
@@ -232,14 +291,24 @@
                     this.data = data
                     this.loading = false
                 })
+            },
+            getTypeList() {
+                getAllTypes().then(res => {
+                    console.log(res)
+                    this.typeList = res
+                }).catch(() => {
+
+                })
             }
         },
         components: {
             Searchbar,
             BookCell2,
-            ScoreTool
+            ScoreTool,
+            Upload
         },
         mounted() {
+            this.getTypeList()
             this.getData()
         }
     }
