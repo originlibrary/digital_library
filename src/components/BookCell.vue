@@ -27,7 +27,6 @@
             }
         },
         data() {
-            console.log(this.data)
             return {
 
             }

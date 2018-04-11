@@ -95,3 +95,19 @@ export const updateBook = data => {
         data
     })
 }
+
+export const getBookDetailsById = data => {
+    return fetch({
+        url: '/Book/getBookDetailsById',
+        method: 'post',
+        data
+    })
+}
+
+export const getTopFiveByType = data => {
+    return fetch({
+        url: '/Book/getTopFiveByType',
+        method: 'post',
+        data
+    })
+}

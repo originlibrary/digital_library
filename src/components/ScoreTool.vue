@@ -1,5 +1,5 @@
 <template>
-    <div class="score-tool" @mouseleave="score = value">
+    <div class="score-tool" @mouseleave="score = value" :style="noSet ? {} : {cursor: 'pointer'}">
         <!--<Icon type="ios-star"></Icon>-->
         <!--<Icon type="ios-star-half"></Icon>-->
         <Icon

@@ -1,13 +1,14 @@
 <template>
     <div class="channel-body">
         <div class="book-item-container">
-            <em class="book-item-index">{{idx}}.</em>
+            <em class="book-item-index">{{idx + 1}}.</em>
             <div class="book-item-image-container">
                 <img :src="data.cover_url" alt="" class="book-item-image">
             </div>
-            <h3>{{data.name}}</h3>
-            <div></div>
-            <p>计算机 / 软件</p>
+            <h3 class="book-name">{{data.name}}</h3>
+            <div class="author-box">作者：{{data.author}}</div>
+            <div>语言：{{data.language}}</div>
+            <ScoreTool :value="data.average_score" noSet/>
         </div>
     </div>
 </template>
@@ -23,15 +24,14 @@
                 default: () => {
                     return {
                         id: '',
-                        coverUrl: '',
+                        cover_url: '',
                         name: '',
-                        averageScore: 0
+                        average_score: 0
                     }
                 }
             }
         },
         data() {
-            console.log(this.data)
             return {}
         },
         methods: {
@@ -61,7 +61,7 @@
                 width: 32px;
                 line-height: 32px;
                 font-size: 24px;
-                font-family: fzfont;
+                /*font-family: fzfont;*/
             }
             .book-item-image-container {
                 width: 120px;
@@ -75,6 +75,19 @@
                     width: 120px;
                     margin-right: 16px;
                 }
+            }
+            .book-name {
+                height: 45px;
+                overflow: hidden;
+                word-break: break-all;
+                text-overflow: ellipsis;
+
+            }
+            .author-box {
+                height: 40px;
+                overflow: hidden;
+                word-break: break-all;
+                text-overflow: ellipsis;
             }
             p {
                 margin: 10px 0;

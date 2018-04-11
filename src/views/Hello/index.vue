@@ -7,29 +7,31 @@
                     <h2>下载排行</h2>
                 </div>
                 <div class="channel-body">
-                    <div class="book-item-container" :key="down.id" v-for="(down,index) in downloadData">
+                    <div class="book-item-container" :key="down.id" v-for="(down,index) in downloadData" @click="gotoDetail(down)">
                         <em class="book-item-index">{{index + 1}}.</em>
                         <div class="book-item-image-container">
                             <img :src="down.cover_url" alt="" class="book-item-image">
                         </div>
                         <h3>{{down.name}}</h3>
                         <p>{{down.translator}}</p>
+                        <ScoreTool :value="down.average_score" noSet/>
                     </div>
                 </div>
             </div>
 
             <div class="channel-item-container">
                 <div class="channel-header">
-                    <h2>下载排行</h2>
+                    <h2>评分排行</h2>
                 </div>
                 <div class="channel-body">
-                    <div class="book-item-container" :key="source.id" v-for="(source,index) in sourceData">
+                    <div class="book-item-container" :key="source.id" v-for="(source,index) in sourceData" @click="gotoDetail(source)">
                         <em class="book-item-index">{{index + 1}}.</em>
                         <div class="book-item-image-container">
                             <img :src="source.cover_url" alt="" class="book-item-image">
                         </div>
                         <h3>{{source.name}}</h3>
                         <p>{{source.translator}}</p>
+                        <ScoreTool :value="source.average_score" noSet/>
                     </div>
                 </div>
             </div>
@@ -40,13 +42,14 @@
                     <h2>推荐</h2>
                 </div>
                 <div class="channel-body">
-                    <div class="book-item-container" :key="recommend.id" v-for="(recommend,index) in recommendData">
+                    <div class="book-item-container" :key="recommend.id" v-for="(recommend,index) in recommendData" @click="gotoDetail(recommend)">
                         <em class="book-item-index">{{index + 1}}.</em>
                         <div class="book-item-image-container">
                             <img :src="recommend.cover_url" alt="" class="book-item-image">
                         </div>
                         <h3>{{recommend.name}}</h3>
                         <p>{{recommend.translator}}</p>
+                        <ScoreTool :value="recommend.average_score" noSet/>
                     </div>
                 </div>
             </div>
@@ -57,6 +60,7 @@
 
 <script>
     import {getDownloadTopFive, getScoreTopFive, getRecommendTop} from "../../api/book"
+    import ScoreTool from '../../components/ScoreTool'
 
     export default {
         data() {
@@ -66,7 +70,19 @@
                 recommendData:[]
             }
         },
+        components: {
+            ScoreTool
+        },
         methods: {
+            gotoDetail(book) {
+                this.$router.push({
+                    path: '/BookDetail',
+                    query: {
+                        id: book.id,
+                        type: book.type
+                    }
+                })
+            },
             getDownloadTopFive() {
                 getDownloadTopFive().then(res => {
 

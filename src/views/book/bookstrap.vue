@@ -14,15 +14,15 @@
         <!--</Row>-->
         <!--<br />-->
         <!--</template>-->
-        <div class="button-box">
+        <div class="button-box" v-if="role === 1">
             <div class="managerButton" @click="gotoBookType">管理图书</div>
         </div>
         <div class="bookstrap" v-for="(item, i) in list" :key="item.typeMsg.id">
             <div class="typeMsg">{{item.typeMsg.name}}</div>
             <div class="book-list">
                 <div v-for="(book,bi) in item.books" :key="book.id" class="book">
-                    <BookCell :data="book" v-if="book !== 'more'"/>
-                    <div v-if="book === 'more'" class="book-more-box">
+                    <BookCell :data="book" v-if="book !== 'more'" @click.native="gotoDetail(book)"/>
+                    <div v-if="book === 'more'" class="book-more-box" @click="goBookList(item.typeMsg.id)">
                         <Icon type="more" class="book-more-icon"></Icon>
                     </div>
                 </div>
@@ -38,6 +38,7 @@
                 </div>-->
             </div>
         </div>
+        <Spin size="large" fix v-if="loading"></Spin>
     </section>
 </template>
 
@@ -49,23 +50,47 @@
     export default {
         data() {
             return {
-                list: []
+                list: [],
+                loading: false
             }
         },
         mounted() {
             this.getList()
         },
         computed: {
+            role() {
+                return this.$store.getters.role
+            }
         },
         methods: {
+            gotoDetail(book) {
+                this.$router.push({
+                    path: '/BookDetail',
+                    query: {
+                        id: book.id,
+                        type: book.type
+                    }
+                })
+            },
+            goBookList(type) {
+                this.$router.push({
+                    path: '/BookList',
+                    query: {
+                        type: type
+                    }
+                })
+            },
             gotoBookType() {
                 this.$router.push('/BookType')
             },
             getList() {
+                this.loading = true
                 getBookStrap().then(res => {
+                    this.loading = false
                     this.list = this.formatRes(res)
                     console.log(111, this.list)
                 }).catch(() => {
+                    this.loading = false
 
                 })
             },
@@ -87,6 +112,15 @@
         }
     }
 </script>
+
+<style lang="scss">
+    .book-wrap {
+
+        .ivu-spin-fix {
+            background-color: rgba(0, 0, 0, .5);
+        }
+    }
+</style>
 
 <style lang="scss" scoped>
     .book-wrap {

@@ -12,7 +12,9 @@ import Hello from '../views/Hello'
 import Book from '../views/book'
 import BookType from '../views/book/bookType'
 import BookStrap from '../views/book/bookstrap'
+import BookList from '../views/book/bookList'
 import BookManager from '../views/book/bookManager'
+import BookDetail from '../views/book/bookDetail'
 import Download from '../views/download'
 import User from '../views/user'
 
@@ -62,28 +64,40 @@ const router = new Router({
                             component: BookStrap
                         },
                         {
-                            path: '/BookType',
+                            path: '/BookList',
                             meta: { label: '图书', index: 2, parentIndex: 1},
+                            name: 'BookList',
+                            component: BookList
+                        },
+                        {
+                            path: '/BookType',
+                            meta: { label: '图书', index: 3, parentIndex: 1},
                             name: 'BookType',
                             component: BookType
                         },
                         {
                             path: '/BookManager',
-                            meta: { label: '图书', index: 3, parentIndex: 1},
+                            meta: { label: '图书', index: 4, parentIndex: 1},
                             name: 'BookManager',
                             component: BookManager
+                        },
+                        {
+                            path: '/BookDetail',
+                            meta: { label: '图书', index: 5, parentIndex: 1},
+                            name: 'BookDetail',
+                            component: BookDetail
                         }
                     ]
                 },
                 {
                     path: '/Download',
-                    meta: { label: '下载', index: 2},
+                    meta: { label: '下载', index: 6},
                     name: 'Download',
                     component: Download
                 },
                 {
                     path: '/User',
-                    meta: { label: '用户管理', index: 3},
+                    meta: { label: '用户管理', index: 7},
                     name: 'User',
                     component: User
                 }
