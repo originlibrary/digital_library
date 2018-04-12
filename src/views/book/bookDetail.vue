@@ -13,7 +13,7 @@
                     <span>平均评分 ： </span>
                     <ScoreTool style="display: inline-block;" :value="bookDetails.average_score" noSet/>
                 </div>
-                <div>
+                <div v-if="role != 3">
                     <div class="download-button" @click="download">下载</div>
                     <div class="view-button" @click="showBook">预览</div>
                 </div>
@@ -26,7 +26,7 @@
         <div class="book-top-by-type">
             <div class="title">{{bookDetails.remark}}分类Top5</div>
             <div class="book-item-container">
-                <div class="book-item" :key="item.id" v-for="(item,index) in topFive">
+                <div class="book-item" :key="item.id" v-for="(item,index) in topFive" @click="changeBook(item)">
                     <div class="book-image">
                         <img :src="item.cover_url" alt="">
                     </div>
@@ -53,12 +53,20 @@
                 topFive:[],
             }
         },
+        computed: {
+            role() {
+                return this.$store.getters.role
+            }
+        },
         components: {
             ScoreTool
         },
         methods: {
             goBack() {
                 this.$router.go(-1)
+            },
+            changeBook(book) {
+                this.bookDetails = book
             },
             getBookDetailsById() {
                 let params = {
@@ -250,6 +258,13 @@
                 .book-item{
                     width: calc(20% - 4rem);
                     margin: 0 2rem;
+                    cursor: pointer;
+                    transition: background-color .1s;
+                    border-radius: 0.5rem;
+
+                    &:hover {
+                        background-color: rgba(0, 0, 0, .2);
+                    }
 
                     .book-image{
                         height: 10rem;
