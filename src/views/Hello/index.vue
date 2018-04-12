@@ -45,7 +45,7 @@
                     <div class="book-item-container" :key="recommend.id" v-for="(recommend,index) in recommendData" @click="gotoDetail(recommend)">
                         <em class="book-item-index">{{index + 1}}.</em>
                         <div class="book-item-image-container">
-                            <img :src="'/api' + recommend.cover_url" alt="" class="book-item-image">
+                            <img :src="recommend.cover_url" alt="" class="book-item-image">
                         </div>
                         <h3>{{recommend.name}}</h3>
                         <p>{{recommend.translator}}</p>
@@ -181,17 +181,18 @@
                         }
 
                         .book-item-image-container {
-                            width: 120px;
+                            width: 110px;
                             height: 120px;
                             border: 1px solid #fff;
                             float: left;
                             margin-right: 10px;
 
                             .book-item-image {
-
-                                width: 120px;
+                                width: 100%;
+                                height: 100%;
                                 margin-right: 16px;
                             }
+
                         }
 
                         p {

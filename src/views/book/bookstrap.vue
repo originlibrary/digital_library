@@ -98,7 +98,6 @@
                 if(!list instanceof Array) return []
                 return list.map(item => {
                     item.books.forEach(book => {
-                        book.coverUrl = '/api' + book.coverUrl
                         book.averageScore = book.averageScore ? parseInt(book.averageScore) : 0
                     })
                     item.books.push('more')

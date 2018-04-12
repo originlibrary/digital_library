@@ -21,7 +21,6 @@ import User from '../views/user'
 Vue.use(Router)
 
 const router = new Router({
-    mode: 'history',
     routes: [
         {
             path: '/',

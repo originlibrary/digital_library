@@ -21,7 +21,7 @@
                 </FormItem>
                 <FormItem label="选择类型">
                     <Select v-model="form.type" placeholder="选择类型">
-                        <Option v-for="type in typeList" :value="type.id" :key="type.id">{{ type.name }}</Option>
+                        <Option v-for="type in typeList" :value="`${type.id}`" :key="type.id">{{ type.name }}</Option>
                     </Select>
                 </FormItem>
                 <FormItem label="作者">
@@ -40,7 +40,7 @@
                     <Upload v-if="modal" @success="res => form.coverUrl = res"/>
                 </FormItem>
                 <FormItem label="上传图书" v-if="!isEdit">
-                    <Upload v-if="modal" @fileChange="size => fileSize = size" @success="res => form.fileUrl = res"/>
+                    <Upload v-if="modal" @fileChange="size => form.byteSize = size" @success="res => form.fileUrl = res"/>
                 </FormItem>
             </Form>
             <span slot="footer">
@@ -137,7 +137,7 @@
                 ],
                 data: [],
                 filter: {
-                    type: this.$route.query.type || '',
+                    type: `${this.$route.query.type}` || '',
                     name: '',
                     author: ''
                 },
@@ -153,9 +153,9 @@
                     language: '',
                     coverUrl: '',
                     type: '',
-                    fileUrl: ''
+                    fileUrl: '',
+                    byteSize: ''
                 },
-                fileSize: '',
                 formRules: {
                     name: [
                         { required: true, message: '类别名称不能为空', trigger: 'blur' }
@@ -178,6 +178,7 @@
                             duration: 3
                         })
                         this.modal = false
+                        this.getData()
                     }).catch(() => {
                         this.$Message.warning({
                             content: '更新失败',
@@ -186,15 +187,27 @@
                         // this.modal = false
                     })
                 }else {
-                    uploadBook({
-                        ...this.form,
-                        byteSize: this.fileSize
-                    }).then(res => {
+                    if(!this.form.fileUrl) {
+                        this.$Message.warning({
+                            content: '请上传书籍',
+                            duration: 3
+                        })
+                        return
+                    }
+                    if(!this.form.coverUrl) {
+                        this.$Message.warning({
+                            content: '请上传封面',
+                            duration: 3
+                        })
+                        return
+                    }
+                    uploadBook(this.form).then(res => {
                         this.$Message.success({
                             content: '添加成功',
                             duration: 3
                         })
                         this.modal = false
+                        this.getData()
                     }).catch(() => {
                         this.$Message.warning({
                             content: '添加失败',
@@ -209,6 +222,7 @@
                 this.form = {
                     ...this.form,
                     ...{
+                        id: book.id,
                         name: book.name,
                         author: book.author,
                         translator: book.translator,
@@ -229,7 +243,7 @@
                     version: '',
                     language: '',
                     coverUrl: '',
-                    type: ''
+                    type: this.filter.type
                 }
                 this.modal = true
             },

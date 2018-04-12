@@ -14,3 +14,10 @@ export const setScore = data => {
         data
     })
 }
+export const addDownload = data => {
+    return fetch({
+        url: '/Download/addDownload',
+        method: 'post',
+        data
+    })
+}

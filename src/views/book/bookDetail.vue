@@ -14,7 +14,9 @@
                     <ScoreTool style="display: inline-block;" :value="bookDetails.average_score" noSet/>
                 </div>
                 <div>
-                    <div class="download-button" @click="download">下载</div>
+                    <div class="download-button" @click="download">
+                        <a :href="bookDetails.file_url" target="_blank">下载</a>
+                    </div>
                     <div class="view-button" @click="showBook">预览</div>
                 </div>
                 <div class="download-button-container">
@@ -43,6 +45,7 @@
 <script>
     import {getBookDetailsById,getTopFiveByType} from "../../api/book"
     import ScoreTool from '../../components/ScoreTool'
+    import {addDownload} from '../../api/download'
 
     export default {
         data() {
@@ -88,16 +91,25 @@
                     console.log("err", err)
                 })
             },
-            download(){
-                console.log("下载------")
-                // todo:
-            },
             showBook(){
                 console.log("预览----")
                 // todo:
+            },
+            download() {
+                let para = {
+                    userId: this.$store.getters.id,
+                    bookId: this.bookDetails.id
+                }
+                addDownload(para).then(res => {
+                    if(res === 'success') {
+                        console.log('success')
+                    }else {
+                        console.log('failed')
+                    }
+                }).catch(() => {
+                    console.log('failed')
+                })
             }
-
-
         },
         mounted() {
             this.getBookDetailsById()
@@ -147,6 +159,11 @@
                 height: 16rem;
                 margin: 2rem;
                 border: 1px solid #fff;
+
+                img {
+                    width: 100%;
+                    height: 100%;
+                }
             }
 
             .book-detail-right-content{
@@ -186,6 +203,10 @@
                     color: #fff;
                     margin-top: 2rem;
                     margin-left: 1rem;
+
+                    a {
+                        color: #fff;
+                    }
                 }
 
                 .view-button{
@@ -256,6 +277,11 @@
                         width: 8rem;
                         margin: 1rem auto;
                         border: 1px solid #fff;
+
+                        img {
+                            width: 100%;
+                            height: 100%;
+                        }
                     }
 
                     .book-name{
@@ -264,6 +290,7 @@
                         line-height: 2rem;
                         overflow: hidden;
                         word-break: break-all;
+                        text-align: center;
                     }
                     .score-box {
                         text-align: center;

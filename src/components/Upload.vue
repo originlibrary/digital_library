@@ -1,13 +1,14 @@
 <template>
     <div class="upload-tool-wrap">
         <Upload
+            v-if="!success"
             :before-upload="handleUpload"
             action="//localhost:8000/upload">
             <Button type="ghost" icon="ios-cloud-upload-outline">{{placeholder}}</Button>
         </Upload>
         <div v-if="file !== null">
             Upload file: {{ file.name }}
-            <Button type="text" @click="uploadAction" :loading="loadingStatus" style="color: #2b85e4;">
+            <Button v-if="!success" type="text" @click="uploadAction" :loading="loadingStatus" style="color: #2b85e4;">
                 {{ loadingStatus ? 'Uploading' : '点击上传' }}
             </Button>
         </div>
@@ -28,13 +29,14 @@
         data() {
             return {
                 file: null,
-                loadingStatus: false
+                loadingStatus: false,
+                success: false
             }
         },
         methods: {
             handleUpload(file) {
                 this.file = file
-                this.$emit('fileChange', this.file.length)
+                // this.$emit('fileChange', this.file.size)
                 return false
             },
             uploadPercent(percent) {
@@ -46,24 +48,32 @@
                         content: '请先选择文件',
                         duration: 1
                     })
+                let uuid = new UUID().toString()
+                let newFilename = uuid + `${this.file.name}`.substring(`${this.file.name}`.lastIndexOf('.'))
+                console.log('new filename', newFilename)
+                let newFile = new File([this.file], newFilename)
                 let form = new FormData()
-                form.append("file", this.file)
+                console.log(newFile)
+                form.append("file", newFile)
+                form.append("oldName", this.file.name)
                 this.loadingStatus = true
-                upload(form, percent => this.uploadPercent(percent)).then(res => {
+                upload(form).then(res => {
+                    console.log('upload res', res)
+                    this.success = true
                     this.loadingStatus = false
-                    if(res.status === 200 && res.data.code === 200) {
-                        this.$emit('success', '')
-                        this.$Message.success({
-                            content: '上传成功',
-                            duration: 1
-                        })
-                    }
-                }).catch(error => {
+                    this.$emit('success', res)
+                    this.$emit('fileChange', newFile.size)
+                    this.$Message.success({
+                        content: '上传成功',
+                        duration: 3
+                    })
+                }).catch(() => {
+                    this.success = false
                     this.loadingStatus = false
-                    console.log('上传文件失败', error)
+                    // console.log('上传文件失败', error)
                     this.$Message.warning({
                         content: '上传失败',
-                        duration: 1
+                        duration: 2
                     })
                 })
             }

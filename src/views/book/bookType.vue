@@ -11,7 +11,7 @@
                 <div class="list-item type-item" v-for="(item, i) in list" :key="item.id || i" @click="gotoBookList(item.id)">
                     <i class="ivu-icon toolIcon editFolder ivu-icon-edit" @click.stop="editFolder(i)" title="修改"></i>
                     <i class="ivu-icon toolIcon deleteFolder ivu-icon-android-delete" @click.stop="deleteFolder(item.id)"
-                       title="删除"></i>
+                       title="删除" v-if="item.id !== 1"></i>
                     <div class="type-page">
                         <div :title="item.name" class="title">{{item.name}}</div>
                         <!--<div class="remark">{{item.remark}}</div>-->
