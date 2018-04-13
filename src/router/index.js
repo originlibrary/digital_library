@@ -19,7 +19,10 @@ import Download from '../views/download'
 import User from '../views/user'
 
 Vue.use(Router)
-
+Router.prototype.goBack = function () {
+    this.isBack = true
+    window.history.go(-1)
+}
 const router = new Router({
     routes: [
         {
@@ -104,7 +107,6 @@ const router = new Router({
         }
     ]
 })
-
 const whiteList = ['/login', '/register']
 const isInWhiteList = path => {
     let res = whiteList.filter(p => p === path)
@@ -113,10 +115,8 @@ const isInWhiteList = path => {
 
 const setForward = (from, to, cb) => {
     if(typeof from.meta.index !== 'undefined' && typeof to.meta.index !== 'undefined') {
-        const tag = from.meta.index < to.meta.index ? 'forward' : 'back'
-        store.dispatch('SetBackOrForward', tag).then(() => {
-            cb && cb()
-        })
+        router.isBack = from.meta.index >= to.meta.index
+        cb && cb()
     }else {
         cb && cb()
     }

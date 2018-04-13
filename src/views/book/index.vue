@@ -8,9 +8,19 @@
 
 <script>
     export default {
-        computed: {
-            fadeName() {
-                return this.$store.getters.backOrForward === 'back' ? 'fade-back' : 'fade-forward'
+        data() {
+            return {
+                fadeName: 'fade-forward'
+            }
+        },
+        watch: {
+            '$route'(to, from) {
+                let isBack = this.$router.isBack
+                if(isBack) {
+                    this.fadeName = 'fade-back'
+                }else {
+                    this.fadeName = 'fade-forward'
+                }
             }
         }
     }

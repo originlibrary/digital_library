@@ -86,7 +86,7 @@
             getDownloadTopFive() {
                 getDownloadTopFive().then(res => {
 
-                    console.log("getDownloadTopFive", res)
+                    // console.log("getDownloadTopFive", res)
 
                     this.downloadData = res
 
@@ -97,7 +97,7 @@
             getScoreTopFive() {
                 getScoreTopFive().then(res => {
 
-                    console.log("getScoreTopFive", res)
+                    // console.log("getScoreTopFive", res)
 
                     this.sourceData = res
 
@@ -108,7 +108,7 @@
             getRecommendTop() {
                 getRecommendTop().then(res => {
 
-                    console.log("getRecommendTop", res)
+                    // console.log("getRecommendTop", res)
 
                     this.recommendData = res
 
@@ -137,7 +137,7 @@
             align-items: flex-start;
 
             .channel-item-container {
-                width: 26rem;
+                width: 20rem;
 
                 .channel-header {
                     position: relative;
@@ -165,7 +165,7 @@
                         overflow: hidden;
                         margin-bottom: -1px;
                         padding: 16px 0;
-                        border-bottom: 1px dashed #e2e2e2;
+                        /*border-bottom: 1px dashed #e2e2e2;*/
 
                         display: block;
 
@@ -181,7 +181,7 @@
                         }
 
                         .book-item-image-container {
-                            width: 110px;
+                            width: 100px;
                             height: 120px;
                             border: 1px solid #fff;
                             float: left;

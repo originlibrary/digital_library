@@ -34,7 +34,9 @@
 
     export default {
         data() {
-            return {}
+            return {
+                fadeName: 'fade-forward'
+            }
         },
         components: {
             SiderBar,
@@ -199,18 +201,14 @@
                 requestAnimationFrame(animateDots);
             }
         },
-        computed: {
-            fadeName() {
-                return this.$store.getters.backOrForward === 'back' ? 'fade-back' : 'fade-forward'
-            },
-            routerList() {
-                return this.$route.matched.map(route => {
-                    return {
-                        name: route.name,
-                        path: route.path,
-                        label: route.meta.label
-                    }
-                })
+        watch: {
+            '$route'(to, from) {
+                let isBack = this.$router.isBack
+                if(isBack) {
+                    this.fadeName = 'fade-back'
+                }else {
+                    this.fadeName = 'fade-forward'
+                }
             }
         },
         mounted() {
