@@ -47,11 +47,11 @@
                             let roleLabel, role = params.row.role
                             switch (role) {
                                 case 1: {
-                                    roleLabel = '超级管理员'
+                                    roleLabel = '管理员'
                                     break
                                 }
                                 case 2: {
-                                    roleLabel = '管理员'
+                                    roleLabel = '会员'
                                     break
                                 }
                                 case 3: {
