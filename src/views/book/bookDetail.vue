@@ -39,6 +39,7 @@
                 </div>
             </div>
         </div>
+        <a :href="preview" ref="preview" style="display: none;"></a>
     </section>
 </template>
 
@@ -54,6 +55,7 @@
                 type: this.$route.query.type,
                 bookDetails: {},
                 topFive:[],
+                preview: '#'
             }
         },
         computed: {
@@ -100,8 +102,14 @@
                 })
             },
             showBook(){
-                console.log("预览----")
-                // todo:
+                console.log(this.bookDetails)
+                this.preview = this.bookDetails.file_url
+                this.$nextTick(() => {
+                    $(this.$refs.preview).fancybox({
+                        'type': 'iframe'
+                    })
+                    this.$refs.preview.click()
+                })
             },
             download() {
                 let para = {
