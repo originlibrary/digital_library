@@ -47,6 +47,7 @@
     import {getBookDetailsById,getTopFiveByType} from "../../api/book"
     import ScoreTool from '../../components/ScoreTool'
     import {addDownload} from '../../api/download'
+    import {download} from '../../api/upload'
 
     export default {
         data() {
@@ -103,13 +104,30 @@
             },
             showBook(){
                 console.log(this.bookDetails)
-                this.preview = this.bookDetails.file_url
-                this.$nextTick(() => {
-                    $(this.$refs.preview).fancybox({
-                        'type': 'iframe'
-                    })
-                    this.$refs.preview.click()
+                let {href} = this.$router.resolve({
+                    name: 'BookReview',
+                    query: {
+                        url: this.bookDetails.file_url
+                    }
                 })
+                let url = this.bookDetails.file_url + '&review=1'
+                // url = url.replace('?', '%3F')
+                // url = url.replace('&', '%26')
+                // uuu = url
+                // window.open(`${window.location.origin}/static/plugins/pdf/web/viewer.html`)
+                window.open(url, '_blank')
+                // download(this.bookDetails.file_url).then(res => {
+                //
+                // }).catch(() => {
+                //
+                // })
+                // this.preview = this.bookDetails.file_url
+                // this.$nextTick(() => {
+                //     $(this.$refs.preview).fancybox({
+                //         'type': 'iframe'
+                //     })
+                //     this.$refs.preview.click()
+                // })
             },
             download() {
                 let para = {

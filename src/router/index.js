@@ -15,6 +15,7 @@ import BookStrap from '../views/book/bookstrap'
 import BookList from '../views/book/bookList'
 import BookManager from '../views/book/bookManager'
 import BookDetail from '../views/book/bookDetail'
+// import BookReview from '../views/book/bookReview'
 import Download from '../views/download'
 import User from '../views/user'
 
@@ -104,7 +105,12 @@ const router = new Router({
                     component: User
                 }
             ]
-        }
+        },
+        // {
+        //     path: '/bookReview',
+        //     component: BookReview,
+        //     name: 'BookReview'
+        // }
     ]
 })
 const whiteList = ['/login', '/register']
