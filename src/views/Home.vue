@@ -3,7 +3,7 @@
         <canvas id="canvas" class="canvas"></canvas>
         <div class="header">
             <div class="header-title">
-                <span class="title">SXY的个人图书馆</span>
+                <span class="title">数字图书馆</span>
                 <span class="remark">v1.0</span>
             </div>
             <SliderTop/>

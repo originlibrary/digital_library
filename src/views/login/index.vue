@@ -2,7 +2,7 @@
     <div class="index-wrap">
         <canvas id="canvas" class="canvas"></canvas>
         <div class="logo">
-            <span>SXY的图书馆</span>
+            <span>数字图书馆</span>
         </div>
         <div class="main">
             <transition :name="$route.name === 'login' ? 'fade-back' : 'fade-forward'">
@@ -92,7 +92,7 @@
 
             span {
                 color: #066197;
-                font-size: 1.25rem;
+                font-size: 2.25rem;
                 font-weight: bold;
                 margin-bottom: 1rem;
             }
